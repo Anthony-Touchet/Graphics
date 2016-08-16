@@ -50,8 +50,11 @@ int main() {
 	mat4 Earth = mat4(1);	//Earth Matrix
 	mat4 Moon = mat4(1);	//Moon Matrix
 
-	Earth[3] = Sun[3] + vec4(6, 0, 0, 0);	//Earth relative to Sun
-	Moon[3] = Earth[3] + vec4(2, 0, 0, 0);	//Moon Relative to Earth
+	mat4 EarthOffset = Sun;			//Earth relative to Sun
+	EarthOffset[3] += vec4(6, 0, 0, 0);
+	
+	mat4 MoonOffset = Earth;	//Moon Relative to Earth
+	MoonOffset += vec4(2,0,0,0);
 
 	float previous = 0;
 	float current;
@@ -63,7 +66,6 @@ int main() {
 		delta = current - previous;
 		previous = current;
 
-		
 		Gizmos::clear();
 
 		//Rotate planets
