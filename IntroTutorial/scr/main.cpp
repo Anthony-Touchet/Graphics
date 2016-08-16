@@ -50,11 +50,9 @@ int main() {
 	mat4 Earth = mat4(1);	//Earth Matrix
 	mat4 Moon = mat4(1);	//Moon Matrix
 
-	mat4 EarthOffset = Sun;			//Earth relative to Sun
-	EarthOffset[3] += vec4(6, 0, 0, 0);
+	vec4 EarthOffsetFromSun = vec4(6, 0, 0, 0);			//Earth relative to Sun
 	
-	mat4 MoonOffset = Earth;	//Moon Relative to Earth
-	MoonOffset += vec4(2,0,0,0);
+	vec4 MoonOffsetFromEarth = vec4(2, 0, 0, 0);	//Moon Relative to Earth
 
 	float previous = 0;
 	float current;
@@ -80,16 +78,15 @@ int main() {
 		else if(glfwGetKey(window, GLFW_KEY_S))
 			Sun[3] += vec4(1, 0, 0, 0) * delta;
 
-		//Update Earth and moon
-		Earth[3] = Sun[3] + vec4(6, 0, 0, 0);
+		//Update Earth and moon/ This is where they will have to orbit.
+		Earth[3] = Sun[3] + EarthOffsetFromSun;
 
-
-		Moon[3] = Earth[3] + vec4(2, 0, 0, 0);
+		Moon[3] = Earth[3] + MoonOffsetFromEarth;
 
 		//Draw
-		Gizmos::addSphere(vec3(Sun[3][0], Sun[3][1], Sun[3][2]), 3, 20, 20, yellow, &Sun);				//Sun
+		Gizmos::addSphere(vec3(Sun[3][0], Sun[3][1], Sun[3][2]), 3, 20, 20, yellow, &Sun);						//Sun
 		Gizmos::addSphere(vec3(Earth[3][0], Earth[3][1], Earth[3][2]), 1, 20, 20, vec4(0, 1, 0, 1), &Earth);	//Earth
-		Gizmos::addSphere(vec3(Moon[3][0], Moon[3][1], Moon[3][2]), .5, 20, 20, white, &Moon);				//Moon
+		Gizmos::addSphere(vec3(Moon[3][0], Moon[3][1], Moon[3][2]), .5, 20, 20, white, &Moon);					//Moon
 
 		Gizmos::draw(projection * view);
 
