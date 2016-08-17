@@ -1,8 +1,26 @@
 #include "Application.h"
 
-mat4 MultiplyMatrix(mat4 a, mat4 b) {
+void MultiplyMatrix(float a[4][4], float b[4][4]) {
 	float result[4][4];
+	float slot = 0;
 
+	for (int i = 0; i < 4; i++) {
+		for (int ii = 0; ii < 4; ii++) {
+			for (int j = 0; j < 4; j++) {
+				slot = a[i][j] * b[j][ii];
+			}
+			result[i][ii] = slot;
+			slot = 0;
+		}
+	}
+
+	for (int z = 0; z < 4; z++) {
+		for (int zz = 0; zz < 4; zz++) {
+			std::cout << result[z][zz] << " ";
+		}
+		std::cout << std::endl;
+	}
+		
 	
 }
 
