@@ -35,7 +35,7 @@
     <ClCompile Include="scr\Gizmos.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="scr\MyApp.cpp">
+    <ClCompile Include="scr\SolarSystem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

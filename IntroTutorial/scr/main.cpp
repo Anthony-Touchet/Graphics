@@ -1,7 +1,7 @@
 #include "MyApp.h"
 
 int main() {
-	MyApp* app = new MyApp();
+	SolarSystem* app = new SolarSystem();
 	if (app->Start() == true) {
 		while (app->Update() == true)
 			app->Draw();

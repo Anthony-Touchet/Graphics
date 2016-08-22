@@ -14,15 +14,22 @@ using glm::vec3;
 using glm::vec4;
 using glm::mat4;
 
+class Application{
+public:
+	virtual bool Update() = 0;
+	virtual bool Start() = 0;
+	virtual void Draw() = 0;
+	virtual void Shutdown() = 0;
+};
 
-class MyApp {
+class SolarSystem : public Application {
 
 public:
-	MyApp();
-	bool Start();
-	bool Update();
-	void Draw();
-	void Shutdown();
+	SolarSystem();
+	bool Start() override;
+	bool Update() override;
+	void Draw() override;
+	void Shutdown() override;
 
 private:
 	GLFWwindow* window;

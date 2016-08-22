@@ -1,10 +1,10 @@
 #include "MyApp.h"
 
-MyApp::MyApp()
+SolarSystem::SolarSystem()
 {
 }
 
-bool MyApp::Start()
+bool SolarSystem::Start()
 {
 	white = vec4(1, 0, 0, 1);
 	black = vec4(0, 0, 0, 1);
@@ -38,7 +38,7 @@ bool MyApp::Start()
 	return true;
 }
 
-bool MyApp::Update()
+bool SolarSystem::Update()
 {
 	if (glfwWindowShouldClose(window) == false && glfwGetKey(window, GLFW_KEY_ESCAPE) != GLFW_PRESS) {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -60,7 +60,7 @@ bool MyApp::Update()
 	return false;
 }
 
-void MyApp::Draw()
+void SolarSystem::Draw()
 {
 	//Draw
 	Gizmos::addSphere(vec3(Sun[3]), 3, 20, 20, yellow, &Sun);						//Sun
@@ -73,7 +73,7 @@ void MyApp::Draw()
 	glfwPollEvents();
 }
 
-void MyApp::Shutdown()
+void SolarSystem::Shutdown()
 {
 	Gizmos::destroy();
 

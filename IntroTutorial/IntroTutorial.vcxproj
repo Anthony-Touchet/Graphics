@@ -124,7 +124,7 @@
     <ClCompile Include="scr\Gizmos.cpp" />
     <ClCompile Include="scr\gl_core_4_4.c" />
     <ClCompile Include="scr\main.cpp" />
-    <ClCompile Include="scr\MyApp.cpp" />
+    <ClCompile Include="scr\SolarSystem.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
