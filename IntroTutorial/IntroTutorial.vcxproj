@@ -116,14 +116,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Application.h" />
     <ClInclude Include="scr\Gizmos.h" />
     <ClInclude Include="scr\gl_core_4_4.h" />
+    <ClInclude Include="scr\MyApp.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="scr\Gizmos.cpp" />
     <ClCompile Include="scr\gl_core_4_4.c" />
     <ClCompile Include="scr\main.cpp" />
+    <ClCompile Include="scr\MyApp.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
