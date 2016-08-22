@@ -50,17 +50,16 @@ bool MyApp::Update()
 
 		angle += .01f;
 
-		Sun = glm::rotate(Sun, (glm::mediump_float).05, glm::vec3(0, 1, 0));
-		mat4 newEarth = mat4(1);
-		//newEarth[3] = EarthOffsetFromSun;
-		Earth = Sun * newEarth;
+		Sun = glm::rotate(Sun, (glm::mediump_float).05, glm::vec3(0, 1, 0));	//Rotate Sun
 
-		Earth = glm::rotate(Earth, (glm::mediump_float).05, glm::vec3(0, 1, 0));
+		mat4 newEarth = glm::translate(EarthOffsetFromSun);
+		Earth = (Sun * newEarth);
+		Earth = glm::rotate(Earth, (glm::mediump_float)20, glm::vec3(0, 1, 0));
+		
+		mat4 newMoon = glm::translate(MoonOffsetFromEarth);
+		Moon = Earth * newMoon;
 
-		//mat4 newMoon = mat4(1);
-		//newMoon[3] = vec4(cos(angle) * MoonOffsetFromEarth[0], sin(angle) * MoonOffsetFromEarth[0], 0, 1);
-
-		//Moon = Earth * newMoon;
+		
 
 		return true;
 	}
@@ -71,7 +70,7 @@ void MyApp::Draw()
 {
 	//Draw
 	Gizmos::addSphere(vec3(Sun[3][0], Sun[3][1], Sun[3][2]), 3, 20, 20, yellow, &Sun);						//Sun
-	Gizmos::addSphere(vec3(Earth[3][0], Earth[3][1], Earth[3][2]), 1, 20, 20, vec4(0, 1, 0, 1), &Earth);	//Earth
+	Gizmos::addSphere(vec3(Earth[3][0], Earth[3][1], Earth[3][2]), 1, 20, 20, vec4(0, .5, 0, 1), &Earth);	//Earth
 	Gizmos::addSphere(vec3(Moon[3][0], Moon[3][1], Moon[3][2]), .5, 20, 20, white, &Moon);					//Moon
 
 	Gizmos::draw(projection * view);

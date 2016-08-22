@@ -37,9 +37,9 @@ private:
 	mat4 Earth = mat4(1);	//Earth Matrix
 	mat4 Moon = mat4(1);	//Moon Matrix
 
-	vec4 EarthOffsetFromSun = vec4(6, 0, 0, 0);			//Earth relative to Sun
+	vec3 EarthOffsetFromSun = vec3(6, 0, 0);			//Earth relative to Sun
 
-	vec4 MoonOffsetFromEarth = vec4(2, 0, 0, 0);	//Moon Relative to Earth
+	vec3 MoonOffsetFromEarth = vec3(2, 0, 0);	//Moon Relative to Earth
 
 	float previous = 0;
 	float current;
