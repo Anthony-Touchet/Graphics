@@ -39,7 +39,7 @@ private:
 
 	vec3 EarthOffsetFromSun = vec3(6, 0, 0);			//Earth relative to Sun
 
-	vec3 MoonOffsetFromEarth = vec3(2, 0, 0);	//Moon Relative to Earth
+	vec3 MoonOffsetFromEarth = vec3(2, 0, 0);			//Moon Relative to Earth
 
 	float previous = 0;
 	float current;

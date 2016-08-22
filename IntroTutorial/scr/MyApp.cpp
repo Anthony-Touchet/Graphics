@@ -42,24 +42,18 @@ bool MyApp::Update()
 {
 	if (glfwWindowShouldClose(window) == false && glfwGetKey(window, GLFW_KEY_ESCAPE) != GLFW_PRESS) {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		current = glfwGetTime();
-		delta = current - previous;
-		previous = current;
 
 		Gizmos::clear();
 
 		angle += .01f;
+		mat4 sunrot = glm::rotate(angle, glm::vec3(0, 1, 0));	//Rotate Sun
+		Sun = mat4(1) * sunrot;		//Apply Rotation
 
-		Sun = glm::rotate(Sun, (glm::mediump_float).05, glm::vec3(0, 1, 0));	//Rotate Sun
-
-		mat4 newEarth = glm::translate(EarthOffsetFromSun);
-		Earth = (Sun * newEarth);
-		Earth = glm::rotate(Earth, (glm::mediump_float)20, glm::vec3(0, 1, 0));
+		mat4 newEarthPos = glm::translate(EarthOffsetFromSun);														//Transform Matrix, Earth to Sun
+		Earth = Sun * newEarthPos * glm::rotate(angle, glm::vec3(0, 1, 0)/* Rotating is part of how it moves */);	//Sun = Origin, newEarth * glm::rotate = How are you transforming it.
 		
-		mat4 newMoon = glm::translate(MoonOffsetFromEarth);
-		Moon = Earth * newMoon;
-
-		
+		mat4 newMoon = glm::translate(MoonOffsetFromEarth);			//Translation Matrix of the Moon
+		Moon = Earth * newMoon * glm::rotate(angle, glm::vec3(0, 1, 0));			//Apply the translation
 
 		return true;
 	}
@@ -69,9 +63,9 @@ bool MyApp::Update()
 void MyApp::Draw()
 {
 	//Draw
-	Gizmos::addSphere(vec3(Sun[3][0], Sun[3][1], Sun[3][2]), 3, 20, 20, yellow, &Sun);						//Sun
-	Gizmos::addSphere(vec3(Earth[3][0], Earth[3][1], Earth[3][2]), 1, 20, 20, vec4(0, .5, 0, 1), &Earth);	//Earth
-	Gizmos::addSphere(vec3(Moon[3][0], Moon[3][1], Moon[3][2]), .5, 20, 20, white, &Moon);					//Moon
+	Gizmos::addSphere(vec3(Sun[3]), 3, 20, 20, yellow, &Sun);						//Sun
+	Gizmos::addSphere(vec3(Earth[3]), 1, 20, 20, vec4(0, .5, 0, 1), &Earth);	//Earth
+	Gizmos::addSphere(vec3(Moon[3]), .5, 20, 20, white, &Moon);					//Moon
 
 	Gizmos::draw(projection * view);
 
