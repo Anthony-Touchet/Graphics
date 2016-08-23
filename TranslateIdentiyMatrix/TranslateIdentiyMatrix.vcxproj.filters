@@ -15,30 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="scr\gl_core_4_4.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="scr\Gizmos.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="scr\MyApp.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Camera.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="scr\gl_core_4_4.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="scr\main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="scr\Gizmos.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="scr\SolarSystem.cpp">
+    <ClCompile Include="Source.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

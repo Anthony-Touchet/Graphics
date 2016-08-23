@@ -29,7 +29,7 @@ bool SolarSystem::Start()
 	}
 
 	view = glm::lookAt(vec3(10, 10, 10), vec3(0), vec3(0, 1, 0));
-	projection = glm::perspective(glm::pi<float>() * 0.25f, 16 / 9.f, 0.1f, 1000.f);
+	projection = glm::ortho(-17.7, 17.7, -10.0, 10.0, 0.1, 50.0);	//glm::perspective(glm::pi<float>() * 0.25f, 16 / 9.f, 0.1f, 1000.f);
 
 	glEnable(GL_DEPTH_TEST);	//Enables the Depth Buffer
 
@@ -40,6 +40,17 @@ bool SolarSystem::Start()
 
 bool SolarSystem::Update()
 {
+	
+	current = (float)glfwGetTime();
+	delta = current - previous;
+	previous = current;
+
+	mat4 cameraTransform = glm::inverse(view);
+
+	cameraTransform = cameraTransform * glm::translate(vec3(0, 0, 10 * delta));
+
+	view = glm::inverse(cameraTransform);
+
 	if (glfwWindowShouldClose(window) == false && glfwGetKey(window, GLFW_KEY_ESCAPE) != GLFW_PRESS) {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -63,7 +74,7 @@ bool SolarSystem::Update()
 void SolarSystem::Draw()
 {
 	//Draw
-	Gizmos::addSphere(vec3(Sun[3]), 3, 20, 20, yellow, &Sun);						//Sun
+	Gizmos::addSphere(vec3(Sun[3]), 3, 20, 20, yellow, &Sun);					//Sun
 	Gizmos::addSphere(vec3(Earth[3]), 1, 20, 20, vec4(0, .5, 0, 1), &Earth);	//Earth
 	Gizmos::addSphere(vec3(Moon[3]), .5, 20, 20, white, &Moon);					//Moon
 

@@ -19,8 +19,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{AC443558-7339-4726-8011-9EF1CFAE4244}</ProjectGuid>
-    <RootNamespace>IntroTutorial</RootNamespace>
+    <ProjectGuid>{098266C6-D10B-472B-A00E-E2DCDC676C4B}</ProjectGuid>
+    <RootNamespace>TranslateIdentiyMatrix</RootNamespace>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -68,19 +68,13 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>C:\Users\anthony.touchet.AIE\Documents\GitHub\GraphicTutorials\Graphics\dep\glm;C:\Users\anthony.touchet.AIE\Documents\GitHub\GraphicTutorials\Graphics\dep\glfw\include;C:\Users\anthony.touchet.AIE\Documents\GitHub\GraphicTutorials\Graphics\IntroTutorial\scr;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Users\anthony.touchet.AIE\Documents\GitHub\GraphicTutorials\Graphics\dep\glm;C:\Users\anthony.touchet.AIE\Documents\GitHub\GraphicTutorials\Graphics\dep\glfw\lib;$(LibraryPath)</LibraryPath>
-  </PropertyGroup>
+  <PropertyGroup />
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
     </ClCompile>
-    <Link>
-      <AdditionalDependencies>glfw3.lib;openGL32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-    </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -116,16 +110,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Camera.h" />
-    <ClInclude Include="scr\Gizmos.h" />
-    <ClInclude Include="scr\gl_core_4_4.h" />
-    <ClInclude Include="scr\MyApp.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="scr\Gizmos.cpp" />
-    <ClCompile Include="scr\gl_core_4_4.c" />
-    <ClCompile Include="scr\main.cpp" />
-    <ClCompile Include="scr\SolarSystem.cpp" />
+    <ClCompile Include="Source.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
