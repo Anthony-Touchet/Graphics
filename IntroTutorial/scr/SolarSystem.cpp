@@ -29,7 +29,7 @@ bool SolarSystem::Start()
 	}
 
 	view = glm::lookAt(vec3(10, 10, 10), vec3(0), vec3(0, 1, 0));
-	projection = glm::ortho(-17.7, 17.7, -10.0, 10.0, 0.1, 50.0);	//glm::perspective(glm::pi<float>() * 0.25f, 16 / 9.f, 0.1f, 1000.f);
+	projection = glm::perspective(glm::pi<float>() * 0.25f, 16 / 9.f, 0.1f, 1000.f);	/*glm::ortho(-17.7, 17.7, -10.0, 10.0, 0.1, 50.0);*/
 
 	glEnable(GL_DEPTH_TEST);	//Enables the Depth Buffer
 
@@ -40,8 +40,8 @@ bool SolarSystem::Start()
 
 bool SolarSystem::Update()
 {
-	
-	current = (float)glfwGetTime();
+	//Messing with the Camera
+	/*current = (float)glfwGetTime();
 	delta = current - previous;
 	previous = current;
 
@@ -49,7 +49,7 @@ bool SolarSystem::Update()
 
 	cameraTransform = cameraTransform * glm::translate(vec3(0, 0, 10 * delta));
 
-	view = glm::inverse(cameraTransform);
+	view = glm::inverse(cameraTransform);*/
 
 	if (glfwWindowShouldClose(window) == false && glfwGetKey(window, GLFW_KEY_ESCAPE) != GLFW_PRESS) {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -63,7 +63,7 @@ bool SolarSystem::Update()
 		mat4 newEarthPos = glm::translate(EarthOffsetFromSun);														//Transform Matrix, Earth to Sun
 		Earth = Sun * newEarthPos * glm::rotate(angle, glm::vec3(0, 1, 0)/* Rotating is part of how it moves */);	//Sun = Origin, newEarth * glm::rotate = How are you transforming it.
 		
-		mat4 newMoon = glm::translate(MoonOffsetFromEarth);			//Translation Matrix of the Moon
+		mat4 newMoon = glm::translate(MoonOffsetFromEarth);							//Translation Matrix of the Moon
 		Moon = Earth * newMoon * glm::rotate(angle, glm::vec3(0, 1, 0));			//Apply the translation
 
 		return true;
