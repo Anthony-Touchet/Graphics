@@ -16,12 +16,23 @@ using glm::mat4;
 
 class Camera {
 public:
-	virtual void update() = 0;
-	//void;
+	virtual void update(float deltaTime) = 0;
+	void setPerspective(float, float, float, float);	void setLookAt(vec3 from, vec3 to, vec3 up);	void setPosition(vec3 position);	mat4 getWorldTransform();	mat4 getView();	mat4 getProjection();	mat4 getProjectionView();
 
 private:
+	void updateProjectionView();
 	mat4 worldTransform;
 	mat4 viewTransform;
 	mat4 projectionTransform;
 	mat4 projectionViewTransform;
+};
+
+class FlyCamera : public Camera {
+public:
+	void update(float deltaTime) override;
+	void setSpeed(float speed);
+
+private:
+	vec3 up;
+	float speed;
 };

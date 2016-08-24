@@ -41,7 +41,7 @@ bool SolarSystem::Start()
 bool SolarSystem::Update()
 {
 	//Messing with the Camera
-	/*current = (float)glfwGetTime();
+	current = (float)glfwGetTime();
 	delta = current - previous;
 	previous = current;
 
@@ -49,8 +49,9 @@ bool SolarSystem::Update()
 
 	cameraTransform = cameraTransform * glm::translate(vec3(0, 0, 10 * delta));
 
-	view = glm::inverse(cameraTransform);*/
+	view = glm::inverse(cameraTransform);
 
+	//If window is open
 	if (glfwWindowShouldClose(window) == false && glfwGetKey(window, GLFW_KEY_ESCAPE) != GLFW_PRESS) {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
