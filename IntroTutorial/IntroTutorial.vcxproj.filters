@@ -24,7 +24,7 @@
     <ClInclude Include="scr\MyApp.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Camera.h">
+    <ClInclude Include="scr\Camera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

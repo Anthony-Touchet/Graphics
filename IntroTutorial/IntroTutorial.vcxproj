@@ -116,7 +116,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Camera.h" />
+    <ClInclude Include="scr\Camera.h" />
     <ClInclude Include="scr\Gizmos.h" />
     <ClInclude Include="scr\gl_core_4_4.h" />
     <ClInclude Include="scr\MyApp.h" />
