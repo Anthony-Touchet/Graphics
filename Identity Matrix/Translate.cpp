@@ -48,24 +48,24 @@ void Translate(float vec[], int matrixSize) {
 	delete matrix;
 }
 
-int main() {
-	int matrixSize;
-
-	std::cout << "Give size of matrix:" << std::endl;
-	std::cin >> matrixSize;
-
-	float* trans = new float[matrixSize];
-
-	std::cout << "Enter transformation. Identity will be moved by this much: " << std::endl;
-	for (int i = 0; i < matrixSize; i++)
-		std::cin >> trans[i];
-
-	std::cout << std::endl;
-
-	Translate(trans, matrixSize);
-
-	std::cout << std::endl;
-
-	system("pause");
-	return 0;
-}
+//int main() {
+//	int matrixSize;
+//
+//	std::cout << "Give size of matrix:" << std::endl;
+//	std::cin >> matrixSize;
+//
+//	float* trans = new float[matrixSize];
+//
+//	std::cout << "Enter transformation. Identity will be moved by this much: " << std::endl;
+//	for (int i = 0; i < matrixSize; i++)
+//		std::cin >> trans[i];
+//
+//	std::cout << std::endl;
+//
+//	Translate(trans, matrixSize);
+//
+//	std::cout << std::endl;
+//
+//	system("pause");
+//	return 0;
+//}
