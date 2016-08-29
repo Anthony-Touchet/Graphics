@@ -21,5 +21,8 @@
     <ClCompile Include="Translate.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Translate-Rotate-Scale.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
