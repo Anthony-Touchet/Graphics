@@ -58,7 +58,7 @@ bool SolarSystem::Update()
 
 		angle += .01f;
 		mat4 sunrot = glm::rotate(angle, glm::vec3(0, 1, 0));	//Rotate Sun
-		Sun = mat4(1) * sunrot;		//Apply Rotation
+		Sun = mat4(1) * sunrot;									//Apply Rotation
 
 		mat4 newEarthPos = glm::translate(EarthOffsetFromSun);														//Transform Matrix, Earth to Sun
 		Earth = Sun * newEarthPos * glm::rotate(angle, glm::vec3(0, 1, 0)/* Rotating is part of how it moves */);	//Sun = Origin, newEarth * glm::rotate = How are you transforming it.
