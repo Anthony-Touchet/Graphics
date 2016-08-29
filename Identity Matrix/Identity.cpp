@@ -44,30 +44,35 @@ float** MakeIdentiy(int matrixSize) {
 			}
 		}
 	}
+	return matrix;
+}
 
-	//Printing Matrix
-	/*for (int i = 0; i < matrixSize; i++) {
-		for (int j = 0; j < matrixSize; j++) {
-			std::cout << matrix[i][j] << " ";
-		}
+float** GenerateOrthoProjection(float right, float left, float top, float bottom, float near, float far) {
+	float** matrix = MakeIdentiy(4);
 
-		std::cout << std::endl;
-	}*/
+	//Scale
+	matrix[0][0] = 2 / (right - left);
+	matrix[1][1] = 2 / (top - bottom);
+	matrix[2][2] = 2 / (near - far);
+
+	//Positioning
+	matrix[0][3] = -((right + left) / (right - left));
+	matrix[1][3] = -((top + bottom) / (top - bottom));
+	matrix[2][3] = -((far + near) / (far - near));
 
 	return matrix;
 }
 
+int main() {
+	float** matrix = GenerateOrthoProjection(1, -1, 1, -1, 0, 1);
+	
+	for (int z = 0; z < 4; z++) {
+		for (int zz = 0; zz < 4; zz++) {
+			std::cout << matrix[z][zz] << " ";
+		}
+		std::cout << std::endl;
+	}
 
-//int main() {
-//	float** c = MakeIdentiy(4);
-//	float** b = MakeIdentiy(4);
-//
-//	b[3][0] = 3;
-//	b[3][1] = 2;
-//	b[3][2] = 1;
-//
-//	MultiplyMatrix(c, b);
-//
-//	system("pause");
-//	return 0;
-//}
+	system("pause");
+	return 0;
+}

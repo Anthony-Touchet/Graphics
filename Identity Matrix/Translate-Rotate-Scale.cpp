@@ -67,7 +67,9 @@ int Rotate(float angle, int axis[3],float** original) {
 }
 
 void Scale() {
-	//From what i read you move the the matrix back to origin, scale it, then move it back to the original position. this could just be like translation of the matrix but the diagnal of it is increased or decreaced.
+	//From what i read you move the the matrix back to origin, 
+	//scale it, then move it back to the original position. this could just be like 
+	//translation of the matrix but the diagnal of it is increased or decreaced.
 }
 
 float** MakeNewIDMatrix() {
@@ -104,28 +106,28 @@ void PrintMatrix(float** matrix) {
 	}
 }
 
-int main() {
-
-	float** a, **b;
-	float** result;
-	
-	a = MakeNewIDMatrix();
-	b = MakeNewIDMatrix();
-
-	/*a[0][3] = 4;
-	a[1][3] = 3;
-	a[2][3] = 2;
-
-	b[0][3] = 1;
-	b[1][3] = 1;
-	b[2][3] = 1;*/
-
-	/*result[0][3] = 5;
-	result[1][3] = 4;
-	result[2][3] = 3;*/
-
-	//result = Translate(a,b);
-
-	system("pause");
-	return 0;
-}
+//int main() {
+//
+//	float** a, **b;
+//	float** result;
+//	
+//	a = MakeNewIDMatrix();
+//	b = MakeNewIDMatrix();
+//
+//	/*a[0][3] = 4;
+//	a[1][3] = 3;
+//	a[2][3] = 2;
+//
+//	b[0][3] = 1;
+//	b[1][3] = 1;
+//	b[2][3] = 1;*/
+//
+//	/*result[0][3] = 5;
+//	result[1][3] = 4;
+//	result[2][3] = 3;*/
+//
+//	//result = Translate(a,b);
+//
+//	system("pause");
+//	return 0;
+//}
