@@ -24,10 +24,13 @@ public:
 	mat4 getView();
 	mat4 getProjection();
 	mat4 getProjectionView();
-
-private:
-	void updateProjectionView();
+	double lastx = 0;
+	double lasty = 0;
+	void RotateWorld(mat4 rotate);
 	mat4 worldTransform;
+
+private:	
+	void updateProjectionView();
 	mat4 viewTransform;
 	mat4 projectionTransform;
 	mat4 projectionViewTransform;

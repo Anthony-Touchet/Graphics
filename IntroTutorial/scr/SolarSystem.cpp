@@ -73,6 +73,19 @@ bool SolarSystem::Update()
 
 void SolarSystem::Draw()
 {
+
+	Gizmos::addTransform(glm::mat4(1));
+	vec4 white(1);
+	vec4 black(.25, .25, .25, 1);
+	for (int i = 0; i < 21; ++i) {
+		Gizmos::addLine(vec3(-10 + i, 0, 10),
+			vec3(-10 + i, 0, -10),
+			i == 10 ? white : black);
+		Gizmos::addLine(vec3(10, 0, -10 + i),
+			vec3(-10, 0, -10 + i),
+			i == 10 ? white : black);
+	}
+
 	//Draw
 	Gizmos::addSphere(vec3(Sun[3]), 3, 20, 20, yellow, &Sun);					//Sun
 	Gizmos::addSphere(vec3(Earth[3]), 1, 20, 20, vec4(0, .5, 0, 1), &Earth);	//Earth

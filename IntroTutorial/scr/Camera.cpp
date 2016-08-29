@@ -35,6 +35,11 @@ mat4 Camera::getProjectionView()
 	return projectionViewTransform;
 }
 
+void Camera::RotateWorld(mat4 rotate)
+{
+	worldTransform = worldTransform * rotate;
+}
+
 void Camera::updateProjectionView()
 {
 	projectionViewTransform = projectionTransform * viewTransform * worldTransform;
@@ -46,10 +51,23 @@ mat4 GetRotateMatrix(float angle, vec3 up) {
 
 void FlyCamera::update(float deltaTime, GLFWwindow* window)
 {
-	vec3 moveBy = vec3(0,0,0);					//How Much to move the camera by
+	mat4 moveBy = mat4(1);					//How Much to move the camera by
+	mat4 rotateBy = mat4(1);					//How Much to rotate by
 	double x, y;
-	double lastX = 0;
-	double deltaX;
+	glfwGetCursorPos(window, &x, &y);
+	double Xoffset;
+	double Yoffset;
+
+	
+	Xoffset = lastx - x;
+	Yoffset = lasty - y;
+
+	lastx = x;
+	lasty = y;
+
+	//Scale down effect
+	Xoffset *= .005;
+	Yoffset *= .005;
 
 	int stateW = glfwGetKey(window, GLFW_KEY_W);	//State W is in
 	int stateS = glfwGetKey(window, GLFW_KEY_S);	//State S is in
@@ -58,36 +76,48 @@ void FlyCamera::update(float deltaTime, GLFWwindow* window)
 	int stateMouse = glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT);	//State Mouse is in
 
 	if (stateMouse == GLFW_PRESS) {				//pressing the Mouse Button
-		glfwGetCursorPos(window, &x, &y);
-		deltaX = x - lastX;
-		lastX = x;
+		if (Yoffset < 1 || Yoffset > 1) {
+			double rotate = Yoffset;
+			rotateBy[1][1] = cos(rotate);
+			rotateBy[1][2] = -sin(rotate);
+			rotateBy[2][1] = sin(rotate);
+			rotateBy[2][2] = cos(rotate);
+		}
 		
+		if (Xoffset < 1 || Xoffset > 1) {
+			double rotate = Xoffset;
 
+			rotateBy[0][0] = cos(rotate);
+			rotateBy[0][2] = sin(rotate);
+			rotateBy[2][0] = -sin(rotate);
+			rotateBy[2][2] = cos(rotate);
+		}
+		
 	}
 	
 	if (stateW == GLFW_PRESS) {
-		moveBy.x += speed * deltaTime;
-		moveBy.z += speed * deltaTime;
+		moveBy[0][3] += speed * deltaTime;
+		moveBy[2][3] += speed * deltaTime;
 	}
 
 	if (stateS == GLFW_PRESS) {
-		moveBy.x -= speed * deltaTime;
-		moveBy.z -= speed * deltaTime;
+		moveBy[0][3] -= speed * deltaTime;
+		moveBy[2][3] -= speed * deltaTime;
 	}
 
 	if (stateA == GLFW_PRESS) {
-		moveBy.x += speed * deltaTime;
-		moveBy.z -= speed * deltaTime;
+		moveBy[0][3] += speed * deltaTime;
+		moveBy[2][3] -= speed * deltaTime;
 	}
 
 	if (stateD == GLFW_PRESS) {
-		moveBy.x -= speed * deltaTime;
-		moveBy.z += speed * deltaTime;
+		moveBy[0][3] -= speed * deltaTime;
+		moveBy[2][3] += speed * deltaTime;
 	}
 
-	setPosition(moveBy);
+	worldTransform *= moveBy * rotateBy;
 
-	getView() = glm::inverse(getWorldTransform());
+	getView() *= glm::inverse(worldTransform);
 
 	getProjectionView();
 }
