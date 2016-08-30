@@ -58,7 +58,7 @@ void FlyCamera::update(float deltaTime, GLFWwindow* window)
 	double Xoffset;
 	double Yoffset;
 
-	
+
 	Xoffset = lastx - x;
 	Yoffset = lasty - y;
 
@@ -83,7 +83,7 @@ void FlyCamera::update(float deltaTime, GLFWwindow* window)
 			rotateBy[2][1] = sin(rotate);
 			rotateBy[2][2] = cos(rotate);
 		}
-		
+
 		if (Xoffset > 1 || Xoffset < 1) {
 			double rotate = Xoffset;
 
@@ -92,9 +92,9 @@ void FlyCamera::update(float deltaTime, GLFWwindow* window)
 			rotateBy[2][0] = -sin(rotate);
 			rotateBy[2][2] = cos(rotate);
 		}
-		
+
 	}
-	
+
 	if (stateW == GLFW_PRESS) {
 		moveBy.x += speed * deltaTime;
 		moveBy.z += speed * deltaTime;
@@ -114,7 +114,7 @@ void FlyCamera::update(float deltaTime, GLFWwindow* window)
 		moveBy.x -= speed * deltaTime;
 		moveBy.z += speed * deltaTime;
 	}
-	setPosition(moveBy);
+	worldTransform *= glm::translate(moveBy);
 
 	worldTransform *= rotateBy;
 
