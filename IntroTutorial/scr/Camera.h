@@ -31,7 +31,6 @@ public:
 	mat4 viewTransform;
 private:	
 	void updateProjectionView();
-	
 	mat4 projectionTransform;
 	mat4 projectionViewTransform;
 };

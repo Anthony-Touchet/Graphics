@@ -72,17 +72,27 @@ float** GeneratePersProjection(float fov, float n, float f, float a) {
 	matrix[2][3] = ((2 * f *n) / (f - n));
 
 	matrix[3][2] = -1;
+	matrix[3][3] = 0;
 
 	return matrix;
 }
 
 //int main() {
-//	float** matrix = GeneratePersProjection(45, .1, 100, 16 / 9);
-//	float** matrix = GenerateOrthoProjection(1, -1, 1, -1, 0, 1);
+//	float** perMatrix = GeneratePersProjection(45, .1, 100, 16 / 9);
+//	float** orthoMatrix = GenerateOrthoProjection(1, -1, 1, -1, 0, 1);
 //	
 //	for (int z = 0; z < 4; z++) {
 //		for (int zz = 0; zz < 4; zz++) {
-//			std::cout << matrix[z][zz] << " ";
+//			std::cout << orthoMatrix[z][zz] << " ";
+//		}
+//		std::cout << std::endl;
+//	}
+//
+//	std::cout << std::endl;
+//
+//	for (int z = 0; z < 4; z++) {
+//		for (int zz = 0; zz < 4; zz++) {
+//			std::cout << perMatrix[z][zz] << " ";
 //		}
 //		std::cout << std::endl;
 //	}

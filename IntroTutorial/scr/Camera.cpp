@@ -76,7 +76,7 @@ void FlyCamera::update(float deltaTime, GLFWwindow* window)
 	int stateMouse = glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT);	//State Mouse is in
 
 	if (stateMouse == GLFW_PRESS) {				//pressing the Mouse Button
-		if (Yoffset < 1 || Yoffset > 1) {
+		if (Yoffset > 1 || Yoffset < 1) {
 			double rotate = Yoffset;
 			rotateBy[1][1] = cos(rotate);
 			rotateBy[1][2] = -sin(rotate);
@@ -84,7 +84,7 @@ void FlyCamera::update(float deltaTime, GLFWwindow* window)
 			rotateBy[2][2] = cos(rotate);
 		}
 		
-		if (Xoffset < 1 || Xoffset > 1) {
+		if (Xoffset > 1 || Xoffset < 1) {
 			double rotate = Xoffset;
 
 			rotateBy[0][0] = cos(rotate);
