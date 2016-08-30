@@ -22,6 +22,7 @@
     <ProjectGuid>{AC443558-7339-4726-8011-9EF1CFAE4244}</ProjectGuid>
     <RootNamespace>IntroTutorial</RootNamespace>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+    <ProjectName>Graphics</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -126,6 +127,7 @@
     <ClCompile Include="scr\Gizmos.cpp" />
     <ClCompile Include="scr\gl_core_4_4.c" />
     <ClCompile Include="scr\main.cpp" />
+    <ClCompile Include="scr\RenderingGeo.cpp" />
     <ClCompile Include="scr\SolarSystem.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

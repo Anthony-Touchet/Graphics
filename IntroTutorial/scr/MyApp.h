@@ -56,3 +56,31 @@ private:
 
 	float angle = 0;
 };
+
+class RenderingGeometry : public Application {
+
+public:
+	RenderingGeometry();
+	bool Start() override;
+	bool Update() override;
+	void Draw() override;
+	void Shutdown() override;
+	void generateGrid(unsigned int rows, unsigned int cols);
+	unsigned int m_VAO;
+	unsigned int m_VBO;
+	unsigned int m_IBO;
+
+private:
+	GLFWwindow* window;
+	FlyCamera cam;
+
+	float previous = 0;
+	float current;
+	float delta;
+
+	struct  Vertex
+	{
+		vec4 position;
+		vec4 color;
+	};
+};
