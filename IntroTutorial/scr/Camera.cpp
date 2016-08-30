@@ -51,7 +51,7 @@ mat4 GetRotateMatrix(float angle, vec3 up) {
 
 void FlyCamera::update(float deltaTime, GLFWwindow* window)
 {
-	mat4 moveBy = mat4(1);					//How Much to move the camera by
+	vec3 moveBy = vec3(0);					//How Much to move the camera by
 	mat4 rotateBy = mat4(1);					//How Much to rotate by
 	double x, y;
 	glfwGetCursorPos(window, &x, &y);
@@ -96,28 +96,29 @@ void FlyCamera::update(float deltaTime, GLFWwindow* window)
 	}
 	
 	if (stateW == GLFW_PRESS) {
-		moveBy[0][3] += speed * deltaTime;
-		moveBy[2][3] += speed * deltaTime;
+		moveBy.x += speed * deltaTime;
+		moveBy.z += speed * deltaTime;
 	}
 
 	if (stateS == GLFW_PRESS) {
-		moveBy[0][3] -= speed * deltaTime;
-		moveBy[2][3] -= speed * deltaTime;
+		moveBy.x -= speed * deltaTime;
+		moveBy.z -= speed * deltaTime;
 	}
 
 	if (stateA == GLFW_PRESS) {
-		moveBy[0][3] += speed * deltaTime;
-		moveBy[2][3] -= speed * deltaTime;
+		moveBy.x += speed * deltaTime;
+		moveBy.z -= speed * deltaTime;
 	}
 
 	if (stateD == GLFW_PRESS) {
-		moveBy[0][3] -= speed * deltaTime;
-		moveBy[2][3] += speed * deltaTime;
+		moveBy.x -= speed * deltaTime;
+		moveBy.z += speed * deltaTime;
 	}
+	setPosition(moveBy);
 
-	worldTransform *= moveBy * rotateBy;
+	worldTransform *= rotateBy;
 
-	getView() *= glm::inverse(worldTransform);
+	getView() = glm::inverse(getWorldTransform());
 
 	getProjectionView();
 }

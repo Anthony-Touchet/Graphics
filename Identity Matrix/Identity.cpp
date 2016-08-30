@@ -63,16 +63,30 @@ float** GenerateOrthoProjection(float right, float left, float top, float bottom
 	return matrix;
 }
 
-int main() {
-	float** matrix = GenerateOrthoProjection(1, -1, 1, -1, 0, 1);
-	
-	for (int z = 0; z < 4; z++) {
-		for (int zz = 0; zz < 4; zz++) {
-			std::cout << matrix[z][zz] << " ";
-		}
-		std::cout << std::endl;
-	}
+float** GeneratePersProjection(float fov, float n, float f, float a) {
+	float** matrix = MakeIdentiy(4);
 
-	system("pause");
-	return 0;
+	matrix[0][0] = 1 / (a * tan(fov / 2));
+	matrix[1][1] = 1 / (tan(fov / 2));
+	matrix[2][2] = -((f + n) / (f - n));
+	matrix[2][3] = ((2 * f *n) / (f - n));
+
+	matrix[3][2] = -1;
+
+	return matrix;
 }
+
+//int main() {
+//	float** matrix = GeneratePersProjection(45, .1, 100, 16 / 9);
+//	float** matrix = GenerateOrthoProjection(1, -1, 1, -1, 0, 1);
+//	
+//	for (int z = 0; z < 4; z++) {
+//		for (int zz = 0; zz < 4; zz++) {
+//			std::cout << matrix[z][zz] << " ";
+//		}
+//		std::cout << std::endl;
+//	}
+//
+//	system("pause");
+//	return 0;
+//}

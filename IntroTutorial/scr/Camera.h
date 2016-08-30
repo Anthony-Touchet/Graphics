@@ -28,10 +28,10 @@ public:
 	double lasty = 0;
 	void RotateWorld(mat4 rotate);
 	mat4 worldTransform;
-
+	mat4 viewTransform;
 private:	
 	void updateProjectionView();
-	mat4 viewTransform;
+	
 	mat4 projectionTransform;
 	mat4 projectionViewTransform;
 };
