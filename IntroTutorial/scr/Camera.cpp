@@ -118,8 +118,6 @@ void FlyCamera::update(float deltaTime, GLFWwindow* window)
 
 	worldTransform *= rotateBy;
 
-	getView() = glm::inverse(getWorldTransform());
-
 	getProjectionView();
 }
 
