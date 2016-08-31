@@ -19,10 +19,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{AC443558-7339-4726-8011-9EF1CFAE4244}</ProjectGuid>
-    <RootNamespace>IntroTutorial</RootNamespace>
+    <ProjectGuid>{74E50FB4-7292-4205-B2EB-3E4054D3CA15}</ProjectGuid>
+    <RootNamespace>RenderingGeometry</RootNamespace>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
-    <ProjectName>Graphics</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -70,8 +69,8 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>C:\Users\anthony.touchet.AIE\Documents\GitHub\GraphicTutorials\Graphics\dep\glm;C:\Users\anthony.touchet.AIE\Documents\GitHub\GraphicTutorials\Graphics\dep\glfw\include;C:\Users\anthony.touchet.AIE\Documents\GitHub\GraphicTutorials\Graphics\IntroTutorial\scr;C:\Users\anthony.touchet.AIE\Documents\GitHub\GraphicTutorials\Graphics\dep;$(IncludePath)</IncludePath>
     <LibraryPath>C:\Users\anthony.touchet.AIE\Documents\GitHub\GraphicTutorials\Graphics\dep\glm;C:\Users\anthony.touchet.AIE\Documents\GitHub\GraphicTutorials\Graphics\dep\glfw\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Users\anthony.touchet.AIE\Documents\GitHub\GraphicTutorials\Graphics\dep;C:\Users\anthony.touchet.AIE\Documents\GitHub\GraphicTutorials\Graphics\dep\glfw\include;C:\Users\anthony.touchet.AIE\Documents\GitHub\GraphicTutorials\Graphics\dep\glm;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -117,13 +116,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="scr\Camera.h" />
-    <ClInclude Include="scr\MyApp.h" />
+    <ClCompile Include="..\IntroTutorial\scr\main.cpp" />
+    <ClCompile Include="RenderingGeo.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="scr\Camera.cpp" />
-    <ClCompile Include="scr\main.cpp" />
-    <ClCompile Include="scr\SolarSystem.cpp" />
+    <ClInclude Include="MyApp.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

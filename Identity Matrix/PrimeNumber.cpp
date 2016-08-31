@@ -3,7 +3,7 @@
 //Googled what a prime number is. Haven't worked with primes in a long time.
 //Prime Number: A number that only has itself and 1 as factors. Can't be a multiple. 
 
-bool IsPrime(int num) {
+bool IsPrime(const int &num) {				//if the values aren't being changed, pass them as constant.
 	for (int i = 2; i < 100; i++) {
 		if (num == 1) {
 			return false;
@@ -17,7 +17,7 @@ bool IsPrime(int num) {
 }
 
 //Find Multipules
-bool IsMultiple(int num) {
+bool IsMultiple(const int &num) {			//if the values aren't being changed, pass them as constant.
 	for (int i = 2; i < num; i++) {
 		if (num % i == 0) {
 			return true;
@@ -27,7 +27,7 @@ bool IsMultiple(int num) {
 }
 
 //Adding to array
-int* AddToArray(int* arr, int size, int value) {
+int* AddToArray(int* arr, const int &size, const int &value) {		//if the values aren't being changed, pass them as constant.
 	for (int i = 0; i < size; i++) {
 		if (arr[i] == 0) {
 			arr[i] = value;
@@ -37,7 +37,7 @@ int* AddToArray(int* arr, int size, int value) {
 }
 
 //finding all primes
-void FindAllPrimes(int max) {
+void FindAllPrimes(const int &max) {					//if the values aren't being changed, pass them as constant.
 	//Make array. 0 will repersent empty slots
 	int* arr = new int[max];
 	for  (int i = 0; i < max; i++)
@@ -62,7 +62,9 @@ void FindAllPrimes(int max) {
 
 int main() {
 
-	std::cout << IsMultiple(14) << std::endl;	//Expecting true, Actual is true
+	int a = 14;
+
+	std::cout << IsMultiple(a) << std::endl;	//Expecting true, Actual is true.	ints can be called as const through their referance
 	std::cout << IsMultiple(13) << std::endl;	//Expecting false, Actual is false
 
 	std::cout << std::endl;

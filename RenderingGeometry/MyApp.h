@@ -9,7 +9,6 @@
 #include <Gizmos.h>
 #include <glm/glm.hpp>
 #include <glm/ext.hpp>
-#include "Camera.h"
 
 using glm::vec3;
 using glm::vec4;
@@ -34,7 +33,6 @@ public:
 
 private:
 	GLFWwindow* window;
-	FlyCamera cam;
 	/*mat4 view;
 	mat4 projection;*/
 
