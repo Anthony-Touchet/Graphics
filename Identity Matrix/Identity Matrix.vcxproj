@@ -112,6 +112,7 @@
   <ItemGroup>
     <ClCompile Include="FunctionPointer.cpp" />
     <ClCompile Include="Identity.cpp" />
+    <ClCompile Include="PrimeNumber.cpp" />
     <ClCompile Include="Translate-Rotate-Scale.cpp" />
     <ClCompile Include="Translate.cpp" />
   </ItemGroup>

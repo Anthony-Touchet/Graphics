@@ -16,13 +16,22 @@ void DoYouDo() {
 	std::cout << "do you do?" << std::endl;
 }
 
+void StoreFunction(void(*f)(), void(*arr[4])()) {
+	for (int i = 0; i < 4; i++) {
+		if (arr[i] == 0) {
+			arr[i] = f;
+			break;
+		}
+	}
+}
+
 //int main() {
-//	void(*hello)() = &Hello;
-//	void(*world)() = &World;
-//	void(*how)() = &How;
-//	void(*youdo)() = &DoYouDo;
-//
-//	void(*store[4])() = {hello, world, how, youdo};
+//	void(*store[4])() = {0, 0, 0, 0};
+//	
+//	StoreFunction(Hello, store);
+//	StoreFunction(World, store);
+//	StoreFunction(How, store);
+//	StoreFunction(DoYouDo, store);
 //
 //	for (int i = 0; i < 4; i++) {
 //		(*store[i])();
@@ -30,6 +39,7 @@ void DoYouDo() {
 //
 //	//Expected Result: Hello World. How do you do?
 //
+//	//Actual Result: Hello WOrld. How do you do?
 //	system("pause");
 //	return 0;
 //}
