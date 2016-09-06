@@ -24,54 +24,29 @@ bool RenderingGeometry::Start()
 		return false;
 	}
 
-	generateGrid(10, 10);
-
-	//Creates Shaders. "in" keyword for input. "out" keyword for output.
-	const char* vsSource = "#version 410\n \ layout(location=0) in vec4 position; \ layout(location=1) in vec4 color; \ out vec4 vColor; \ uniform mat4 projectionViewWorldMatrix; \ void main() { vColor = color; gl_Position = projectionViewWorldMatrix * position;}";
-
-	const char* fsSource = "#version 410\n \ in vec4 vColour; \ out vec4 fragColor; \ void main() { fragColor = vColour; }";
-
-	//compileShaders
-	int success = GL_FALSE;
-	unsigned int vertexShader = glCreateShader(GL_VERTEX_SHADER);
-	unsigned int fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-
-	glShaderSource(vertexShader, 1, (const char**)&vsSource, 0);
-	glCompileShader(vertexShader);
-	glShaderSource(fragmentShader, 1, (const char**)&fsSource, 0);
-	glCompileShader(fragmentShader);
-
-	//Create program to put the shaders on.
-	m_programID = glCreateProgram();
-	glAttachShader(m_programID, vertexShader);
-	glAttachShader(m_programID, fragmentShader);
-	glLinkProgram(m_programID);
-
-	glGetProgramiv(m_programID, GL_LINK_STATUS, &success);
-	if (success == GL_FALSE) {
-		int infoLogLength = 0;
-		glGetProgramiv(m_programID, GL_INFO_LOG_LENGTH, &infoLogLength);
-		char* infoLog = new char[infoLogLength];
-
-		glGetProgramInfoLog(m_programID, infoLogLength, 0, infoLog);
-		printf("Error: Failed to link Shader Program!\n");
-		printf("%s\n", infoLog);
-		delete[] infoLog;
-	}
-	glDeleteShader(fragmentShader);
-	glDeleteShader(vertexShader);	
-
-
+	cam.setLookAt(vec3(10, 10, 10), vec3(0), vec3(0, 1, 0));				//Sets the FlyCamera
+	cam.setPerspective(glm::pi<float>() * 0.25f, 16 / 9.f, 0.1f, 1000.f);
+	cam.setSpeed(10);
 
 	glEnable(GL_DEPTH_TEST);	//Enables the Depth Buffer
+	Gizmos::create();
 	return true;
 }
 
 bool RenderingGeometry::Update()
 {
+	//Calculate delta time
+	current = (float)glfwGetTime();
+	delta = current - previous;
+	previous = current;
+
 	//If window is open
 	if (glfwWindowShouldClose(window) == false && glfwGetKey(window, GLFW_KEY_ESCAPE) != GLFW_PRESS) {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+		Gizmos::clear();
+
+		//Update Code go here
 
 		return true;
 	}
@@ -80,8 +55,22 @@ bool RenderingGeometry::Update()
 
 void RenderingGeometry::Draw()
 {
-	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
+	Gizmos::addTransform(glm::mat4(1));
+	vec4 white(1);
+	vec4 black(.25, .25, .25, 1);
+	for (int i = 0; i < 21; ++i) {
+		Gizmos::addLine(vec3(-10 + i, 0, 10),
+			vec3(-10 + i, 0, -10),
+			i == 10 ? white : black);
+		Gizmos::addLine(vec3(10, 0, -10 + i),
+			vec3(-10, 0, -10 + i),
+			i == 10 ? white : black);
+	}
+
+	//Draw
+	cam.update(delta, window);
+	Gizmos::draw(cam.getProjectionView());
 
 	glfwSwapBuffers(window);
 	glfwPollEvents();
@@ -89,7 +78,7 @@ void RenderingGeometry::Draw()
 
 void RenderingGeometry::Shutdown()
 {
-
+	Gizmos::destroy();
 
 	glfwDestroyWindow(window);
 	glfwTerminate();
@@ -127,11 +116,6 @@ void RenderingGeometry::generateGrid(unsigned int rows, unsigned int cols) {
 		}
 	}
 	glGenBuffers(1, &m_VBO);
-	glGenBuffers(1, &m_IBO);
-
-	glGenVertexArrays(1, &m_VAO);
-
-	//VBO Fill
 	glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
 	glBufferData(GL_ARRAY_BUFFER, (rows * cols) * sizeof(Vertex), aoVertices, GL_STATIC_DRAW);
 
@@ -142,13 +126,10 @@ void RenderingGeometry::generateGrid(unsigned int rows, unsigned int cols) {
 
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-	//IBO Fill
+	glGenBuffers(1, &m_IBO);
+
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_IBO);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, (rows - 1) * (cols - 1) * 6 * sizeof(unsigned int), auiIndices, GL_STATIC_DRAW);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-
-	glBindVertexArray(0);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
 	delete auiIndices;
