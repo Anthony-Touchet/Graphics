@@ -70,7 +70,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>C:\Users\anthony.touchet.AIE\Documents\GitHub\GraphicTutorials\Graphics\dep\glm;C:\Users\anthony.touchet.AIE\Documents\GitHub\GraphicTutorials\Graphics\dep\glfw\include;C:\Users\anthony.touchet.AIE\Documents\GitHub\GraphicTutorials\Graphics\IntroTutorial\scr;C:\Users\anthony.touchet.AIE\Documents\GitHub\GraphicTutorials\Graphics\dep;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Users\anthony.touchet.AIE\Documents\GitHub\GraphicTutorials\Graphics\dep\glm;C:\Users\anthony.touchet.AIE\Documents\GitHub\GraphicTutorials\Graphics\dep\glfw\include;C:\Users\anthony.touchet.AIE\Documents\GitHub\GraphicTutorials\Graphics\IntroTutorial\scr;$(IncludePath)</IncludePath>
     <LibraryPath>C:\Users\anthony.touchet.AIE\Documents\GitHub\GraphicTutorials\Graphics\dep\glm;C:\Users\anthony.touchet.AIE\Documents\GitHub\GraphicTutorials\Graphics\dep\glfw\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -118,11 +118,16 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="scr\Camera.h" />
+    <ClInclude Include="scr\Gizmos.h" />
+    <ClInclude Include="scr\gl_core_4_4.h" />
     <ClInclude Include="scr\MyApp.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="scr\Camera.cpp" />
+    <ClCompile Include="scr\Gizmos.cpp" />
+    <ClCompile Include="scr\gl_core_4_4.c" />
     <ClCompile Include="scr\main.cpp" />
+    <ClCompile Include="scr\RenderingGeo.cpp" />
     <ClCompile Include="scr\SolarSystem.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

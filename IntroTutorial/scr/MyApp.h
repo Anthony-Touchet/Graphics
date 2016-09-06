@@ -72,8 +72,11 @@ public:
 
 private:
 	GLFWwindow* window;
+	FlyCamera cam;
 
-	unsigned int m_programID;
+	float previous = 0;
+	float current;
+	float delta;
 
 	struct  Vertex
 	{

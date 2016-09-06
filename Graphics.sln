@@ -3,11 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Graphics", "IntroTutorial\IntroTutorial.vcxproj", "{AC443558-7339-4726-8011-9EF1CFAE4244}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "IntroTutorial", "IntroTutorial\IntroTutorial.vcxproj", "{AC443558-7339-4726-8011-9EF1CFAE4244}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Identity Matrix", "Identity Matrix\Identity Matrix.vcxproj", "{27C9B7F4-3968-4005-B708-6619BBCF0504}"
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RenderingGeometry", "RenderingGeometry\RenderingGeometry.vcxproj", "{74E50FB4-7292-4205-B2EB-3E4054D3CA15}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,14 +31,6 @@ Global
 		{27C9B7F4-3968-4005-B708-6619BBCF0504}.Release|x64.Build.0 = Release|x64
 		{27C9B7F4-3968-4005-B708-6619BBCF0504}.Release|x86.ActiveCfg = Release|Win32
 		{27C9B7F4-3968-4005-B708-6619BBCF0504}.Release|x86.Build.0 = Release|Win32
-		{74E50FB4-7292-4205-B2EB-3E4054D3CA15}.Debug|x64.ActiveCfg = Debug|x64
-		{74E50FB4-7292-4205-B2EB-3E4054D3CA15}.Debug|x64.Build.0 = Debug|x64
-		{74E50FB4-7292-4205-B2EB-3E4054D3CA15}.Debug|x86.ActiveCfg = Debug|Win32
-		{74E50FB4-7292-4205-B2EB-3E4054D3CA15}.Debug|x86.Build.0 = Debug|Win32
-		{74E50FB4-7292-4205-B2EB-3E4054D3CA15}.Release|x64.ActiveCfg = Release|x64
-		{74E50FB4-7292-4205-B2EB-3E4054D3CA15}.Release|x64.Build.0 = Release|x64
-		{74E50FB4-7292-4205-B2EB-3E4054D3CA15}.Release|x86.ActiveCfg = Release|Win32
-		{74E50FB4-7292-4205-B2EB-3E4054D3CA15}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

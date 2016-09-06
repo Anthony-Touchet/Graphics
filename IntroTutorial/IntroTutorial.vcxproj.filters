@@ -15,6 +15,12 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="scr\gl_core_4_4.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="scr\Gizmos.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="scr\MyApp.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -23,13 +29,22 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="scr\gl_core_4_4.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="scr\main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="scr\Gizmos.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="scr\SolarSystem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="scr\Camera.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="scr\RenderingGeo.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
