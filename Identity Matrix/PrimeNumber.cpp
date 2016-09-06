@@ -60,17 +60,17 @@ void FindAllPrimes(const int &max) {					//if the values aren't being changed, p
 	}
 }
 
-int main() {
-
-	int a = 14;
-
-	std::cout << IsMultiple(a) << std::endl;	//Expecting true, Actual is true.	ints can be called as const through their referance
-	std::cout << IsMultiple(13) << std::endl;	//Expecting false, Actual is false
-
-	std::cout << std::endl;
-
-	FindAllPrimes(1000);
-
-	system("pause");
-	return 0;
-}
+//int main() {
+//
+//	int a = 14;
+//
+//	std::cout << IsMultiple(a) << std::endl;	//Expecting true, Actual is true.	ints can be called as const through their referance
+//	std::cout << IsMultiple(13) << std::endl;	//Expecting false, Actual is false
+//
+//	std::cout << std::endl;
+//
+//	FindAllPrimes(1000);
+//
+//	system("pause");
+//	return 0;
+//}
