@@ -1,6 +1,8 @@
 #include "gl_core_4_4.h"
 #include <GLFW/glfw3.h>
 #include <iostream>
+#include <fstream>
+#include <string>
 #define GLM_SWIZZLE
 #define GLM_FORCE_PURE
 
@@ -10,6 +12,8 @@
 #include <glm/glm.hpp>
 #include <glm/ext.hpp>
 #include "Camera.h"
+#include <vector>
+#include<tiny_obj_loader.h>
 
 using glm::vec3;
 using glm::vec4;
@@ -66,6 +70,7 @@ public:
 	void Draw() override;
 	void Shutdown() override;
 	void MakePlane();
+	const char* GetShader(const char* text);
 	unsigned int m_VAO;
 	unsigned int m_VBO;
 	unsigned int m_IBO;
@@ -85,17 +90,4 @@ private:
 		vec4 position;
 		vec4 color;
 	};
-};
-
-class TinyOBJLoader : public Application {
-public:
-	// Inherited via Application
-	TinyOBJLoader();
-	virtual bool Update() override;
-	virtual bool Start() override;
-	virtual void Draw() override;
-	virtual void Shutdown() override;
-
-private:
-	GLFWwindow* window;
 };

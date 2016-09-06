@@ -127,7 +127,6 @@
     <ClCompile Include="scr\Gizmos.cpp" />
     <ClCompile Include="scr\gl_core_4_4.c" />
     <ClCompile Include="scr\main.cpp" />
-    <ClCompile Include="scr\TinyOBJLoader.cpp" />
     <ClCompile Include="scr\RenderingGeo.cpp" />
     <ClCompile Include="scr\SolarSystem.cpp" />
   </ItemGroup>

@@ -1,5 +1,6 @@
 #include "MyApp.h"
 
+
 RenderingGeometry::RenderingGeometry()
 {
 	glfwInit();
@@ -33,7 +34,8 @@ bool RenderingGeometry::Start()
 	MakePlane();	//Generates plane
 
 	//Shaders
-	const char* vsSource = "#version 410\n \ layout(location=0) in vec4 position; \ layout(location=1) in vec4 colour; \ out vec4 vColour; \ uniform mat4 projectionViewWorldMatrix; \ void main() {vColour = colour; gl_Position = projectionViewWorldMatrix * position; }";
+	//const char* vsSource = "#version 410\n \ layout(location=0) in vec4 position; \ layout(location=1) in vec4 colour; \ out vec4 vColour; \ uniform mat4 projectionViewWorldMatrix; \ void main() {vColour = colour; gl_Position = projectionViewWorldMatrix * position; }";
+	const char* vsSource = GetShader("Shader");
 
 	const char* fsSource = "#version 410\n \ in vec4 vColour; \ out vec4 fragColor; \ void main() { fragColor = vColour; }";
 
@@ -161,3 +163,16 @@ void RenderingGeometry::MakePlane()
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
+
+const char* RenderingGeometry::GetShader(const char* text)
+{
+	std::string line;
+	std::ifstream file;
+	file.open(text, std::ios_base::in);
+
+	
+
+	file.close();
+	return ;
+}
+
