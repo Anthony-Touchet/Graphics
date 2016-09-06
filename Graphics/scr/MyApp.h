@@ -70,7 +70,7 @@ public:
 	void Draw() override;
 	void Shutdown() override;
 	void MakePlane();
-	const char* GetShader(const char* text);
+	const char* GetShader(std::string text);
 	unsigned int m_VAO;
 	unsigned int m_VBO;
 	unsigned int m_IBO;
