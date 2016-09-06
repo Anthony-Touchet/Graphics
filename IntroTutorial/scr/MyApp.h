@@ -65,10 +65,12 @@ public:
 	bool Update() override;
 	void Draw() override;
 	void Shutdown() override;
-	void generateGrid(unsigned int rows, unsigned int cols);
+	void generateBuffers();
 	unsigned int m_VAO;
 	unsigned int m_VBO;
 	unsigned int m_IBO;
+	unsigned int m_programID;
+	mat4 m_projectionViewMatrix;
 
 private:
 	GLFWwindow* window;

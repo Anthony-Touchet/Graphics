@@ -70,8 +70,8 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>C:\Users\anthony.touchet.AIE\Documents\GitHub\GraphicTutorials\Graphics\dep\glm;C:\Users\anthony.touchet.AIE\Documents\GitHub\GraphicTutorials\Graphics\dep\glfw\include;C:\Users\anthony.touchet.AIE\Documents\GitHub\GraphicTutorials\Graphics\IntroTutorial\scr;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Users\anthony.touchet.AIE\Documents\GitHub\GraphicTutorials\Graphics\dep\glm;C:\Users\anthony.touchet.AIE\Documents\GitHub\GraphicTutorials\Graphics\dep\glfw\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)dep\glm;$(SolutionDir)dep\glfw\include;$(SolutionDir)IntroTutorial\scr;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)dep\glm;$(SolutionDir)dep\glfw\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
