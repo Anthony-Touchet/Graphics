@@ -70,7 +70,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>$(SolutionDir)dep\glm;$(SolutionDir)dep\glfw\include;$(SolutionDir)IntroTutorial\scr;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)dep;$(SolutionDir)dep\glm;$(SolutionDir)dep\glfw\include;$(SolutionDir)Graphics\scr;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)dep\glm;$(SolutionDir)dep\glfw\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -127,6 +127,7 @@
     <ClCompile Include="scr\Gizmos.cpp" />
     <ClCompile Include="scr\gl_core_4_4.c" />
     <ClCompile Include="scr\main.cpp" />
+    <ClCompile Include="scr\TinyOBJLoader.cpp" />
     <ClCompile Include="scr\RenderingGeo.cpp" />
     <ClCompile Include="scr\SolarSystem.cpp" />
   </ItemGroup>

@@ -65,7 +65,7 @@ public:
 	bool Update() override;
 	void Draw() override;
 	void Shutdown() override;
-	void generateBuffers();
+	void MakePlane();
 	unsigned int m_VAO;
 	unsigned int m_VBO;
 	unsigned int m_IBO;
@@ -85,4 +85,17 @@ private:
 		vec4 position;
 		vec4 color;
 	};
+};
+
+class TinyOBJLoader : public Application {
+public:
+	// Inherited via Application
+	TinyOBJLoader();
+	virtual bool Update() override;
+	virtual bool Start() override;
+	virtual void Draw() override;
+	virtual void Shutdown() override;
+
+private:
+	GLFWwindow* window;
 };
