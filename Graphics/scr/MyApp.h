@@ -13,7 +13,6 @@
 #include <glm/ext.hpp>
 #include "Camera.h"
 #include <vector>
-#include<tiny_obj_loader.h>
 
 using glm::vec3;
 using glm::vec4;
