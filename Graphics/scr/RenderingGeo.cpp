@@ -102,7 +102,7 @@ void RenderingGeometry::Draw()
 
 	//Draw
 	glBindVertexArray(m_VAO);
-	glDrawElements(GL_TRIANGLE_STRIP, 18, GL_UNSIGNED_INT, 0);
+	glDrawElements(GL_TRIANGLE_STRIP, 17, GL_UNSIGNED_INT, 0);
 	
 	cam.update(delta, window);
 
@@ -192,7 +192,7 @@ void RenderingGeometry::MakeCube()
 {
 	//Create Vertex Points
 	Vertex vertices[8];
-	unsigned int indices[18] = { 0,1,2,3,6,7,4,5,6,4,2,0,3,1,5,7 };		//http://www.learnopengles.com/tag/triangle-strips/
+	unsigned int indices[17] = { 0,1,2,3,6,7,4,5,0,1,5,3,7,6,4,2,0};		//http://www.learnopengles.com/tag/triangle-strips/
 
 	vertices[0].position = vec4(-2, 0, -2, 1);
 	vertices[1].position = vec4(2, 0, -2, 1);
@@ -207,10 +207,10 @@ void RenderingGeometry::MakeCube()
 	vertices[1].color = vec4(0, 1, 0, 1);
 	vertices[2].color = vec4(0, 0, 1, 1);
 	vertices[3].color = vec4(.5, .5, .5, 1);
-	vertices[4].color = vec4(1, 0, 0, 1);
-	vertices[5].color = vec4(0, 1, 0, 1);
-	vertices[6].color = vec4(0, 0, 1, 1);
-	vertices[7].color = vec4(.5, .5, .5, 1);
+	vertices[4].color = vec4(1, 1, 0, 1);
+	vertices[5].color = vec4(0, 1, 1, 1);
+	vertices[6].color = vec4(1, 0, 1, 1);
+	vertices[7].color = vec4(1, 1, 1, 1);
 
 	//Create the Data for OpenGL to look at
 
@@ -230,7 +230,7 @@ void RenderingGeometry::MakeCube()
 
 	//Indeies data
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_IBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, 18 * sizeof(unsigned int), indices, GL_STATIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, 17 * sizeof(unsigned int), indices, GL_STATIC_DRAW);
 
 	//Position of Verteies
 	glEnableVertexAttribArray(0);
