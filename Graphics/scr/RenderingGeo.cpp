@@ -31,14 +31,14 @@ RenderingGeometry::RenderingGeometry()
 
 bool RenderingGeometry::Start()
 {
-	MakeCube();	//Generates cube
+	MakeDisc();	//Generates cube
 
 	//Shaders
-	const char* vsSource;						//This will be the shader source
+	const char* vsSource;						//Vertex Shader
 	std::string vs = GetShader("shader.vert");	//Get shader in the form of a string
 	vsSource = vs.c_str();						//Makes string into a const char array.
 
-	const char* fsSource;/* = "#version 410\n \ in vec4 vColour; \ out vec4 fragColor; \ void main() { fragColor = vColour; }"*/
+	const char* fsSource;		//Fragment Shader
 
 	std::string fs = GetShader("frag.frag");
 	fsSource = fs.c_str();
@@ -234,6 +234,57 @@ void RenderingGeometry::MakeCube()
 	//Indeies data
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_IBO);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, 17 * sizeof(unsigned int), indices, GL_STATIC_DRAW);
+
+	//Position of Verteies
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), 0);
+
+	//Colors
+	glEnableVertexAttribArray(1);
+	glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(sizeof(vec4)));
+
+	glBindVertexArray(0);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+}
+
+void RenderingGeometry::MakeDisc()
+{
+	//Create Vertex Points
+	Vertex vertices[5];
+	unsigned int indices[] = { 0,1,2,0,2,3,0,3,4,0,4,1 };		//http://www.learnopengles.com/tag/triangle-strips/
+
+	vertices[0].position = vec4(0, 0, 0, 1);
+	vertices[1].position = vec4(2, 0, 0, 1);
+	vertices[2].position = vec4(0, 0, 2, 1);
+	vertices[3].position = vec4(-2, 0, 0, 1);
+	vertices[4].position = vec4(0, 0, -2, 1);
+
+	vertices[0].color = vec4(1, 0, 0, 1);
+	vertices[1].color = vec4(0, 1, 0, 1);
+	vertices[2].color = vec4(0, 0, 1, 1);
+	vertices[3].color = vec4(.5, .5, .5, 1);
+	vertices[4].color = vec4(1, 1, 0, 1);
+
+	//Create the Data for OpenGL to look at
+
+	//Generate buffers
+	glGenBuffers(1, &m_VBO);
+	glGenBuffers(1, &m_IBO);
+
+	//Generate Vertex Array Object. VAO
+	glGenVertexArrays(1, &m_VAO);
+
+	//Changes will be put on this guy
+	glBindVertexArray(m_VAO);
+
+	//Set the Vertex Buffer's data
+	glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
+	glBufferData(GL_ARRAY_BUFFER, 5 * sizeof(Vertex), vertices, GL_STATIC_DRAW);
+
+	//Indeies data
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_IBO);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, 12 * sizeof(unsigned int), indices, GL_STATIC_DRAW);
 
 	//Position of Verteies
 	glEnableVertexAttribArray(0);

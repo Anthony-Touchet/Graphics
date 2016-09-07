@@ -69,6 +69,7 @@ public:
 	void MakePlane();
 	std::string GetShader(std::string text);
 	void MakeCube();
+	void MakeDisc();
 	unsigned int m_VAO;
 	unsigned int m_VBO;
 	unsigned int m_IBO;
@@ -79,6 +80,8 @@ public:
 private:
 	GLFWwindow* window;
 	FlyCamera cam;
+
+	int indexCount;
 
 	float previous = 0;
 	float current;
