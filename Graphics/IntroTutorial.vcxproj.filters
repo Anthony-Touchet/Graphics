@@ -48,9 +48,4 @@
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
-  <ItemGroup>
-    <Text Include="scr\shader.txt">
-      <Filter>Source Files</Filter>
-    </Text>
-  </ItemGroup>
 </Project>

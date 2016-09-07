@@ -110,6 +110,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="CharacherArrayLength.cpp" />
     <ClCompile Include="FunctionPointer.cpp" />
     <ClCompile Include="Identity.cpp" />
     <ClCompile Include="PrimeNumber.cpp" />

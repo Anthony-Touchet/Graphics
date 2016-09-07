@@ -23,13 +23,13 @@ int Start(int(f)(const int&, const int&), const int &min, const int &max) {
 	return f(min, max);
 }
 
-int main() {
-
-	srand(time(NULL));
-
-	std::cout << Start(CalculateRandom, 1, 10) << std::endl;//Works
-	std::cout << Start(CalculateRandom, 8, 1) << std::endl;	//fails
-
-	system("pause");
-	return 0;
-}
+//int main() {
+//
+//	srand(time(NULL));
+//
+//	std::cout << Start(CalculateRandom, 1, 10) << std::endl;//Works
+//	std::cout << Start(CalculateRandom, 8, 1) << std::endl;	//fails
+//
+//	system("pause");
+//	return 0;
+//}

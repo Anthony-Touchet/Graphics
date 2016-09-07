@@ -35,8 +35,10 @@ bool RenderingGeometry::Start()
 
 	//Shaders
 	//const char* vsSource = "#version 410\n \ layout(location=0) in vec4 position; \ layout(location=1) in vec4 colour; \ out vec4 vColour; \ uniform mat4 projectionViewWorldMatrix; \ void main() {vColour = colour; gl_Position = projectionViewWorldMatrix * position; }";
-	const char* vsSource = GetShader("shader.txt");
+	const char* vsSource;
+	std::string s = GetShader("shader.txt");
 
+	vsSource = s.c_str();
 
 	const char* fsSource = "#version 410\n \ in vec4 vColour; \ out vec4 fragColor; \ void main() { fragColor = vColour; }";
 
@@ -68,6 +70,8 @@ bool RenderingGeometry::Start()
 
 	glDeleteShader(fragmentShader);
 	glDeleteShader(vertexShader);
+
+
 
 	return true;
 }
@@ -165,17 +169,19 @@ void RenderingGeometry::MakePlane()
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
 
-const char* RenderingGeometry::GetShader(std::string text)
+std::string RenderingGeometry::GetShader(std::string text)
 {
 	std::string line;
+	std::string shader;
 	std::ifstream file("shader.txt");
-	file.open(text, std::ios_base::in);
-	 
+	if (file.is_open())
+	{
+		while (std::getline(file, line)) {
+			shader += line + "\n";
+		}
+		file.close();
+	}
 
-
-	assert(file.is_open());
-
-	file.close();
-	return line.c_str();
+	return shader;
 }
 
