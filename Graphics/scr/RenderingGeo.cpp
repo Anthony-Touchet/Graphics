@@ -1,6 +1,5 @@
 #include "MyApp.h"
 
-
 RenderingGeometry::RenderingGeometry()
 {
 	glfwInit();
@@ -19,26 +18,25 @@ RenderingGeometry::RenderingGeometry()
 		glfwTerminate();
 	}
 
-	mat4 view = glm::lookAt(vec3(10, 10, 10), vec3(0), vec3(0, 1, 0));
-	mat4 projection = glm::perspective(glm::pi<float>() * 0.35f,
-		16 / 9.f, 0.1f, 1000.f);
+	cam.setLookAt(vec3(10, 10, 10), vec3(0), vec3(0, 1, 0));
+	cam.setPerspective(glm::pi<float>() * 0.25f, 16 / 9.f, 0.1f, 1000.f);
+	cam.setSpeed(10);
 
-	m_projectionViewMatrix = projection * view;
+	Gizmos::create();
 
 	glClearColor(0.25f, 0.25f, 0.25f, 1);
-	glEnable(GL_DEPTH_TEST); // enables the depth buffer
+	glEnable(GL_DEPTH_TEST);	//Enables the Depth Buffer
+	
 }
 
 bool RenderingGeometry::Start()
 {
-	MakePlane();	//Generates plane
+	MakeCube();	//Generates cube
 
 	//Shaders
-	//const char* vsSource = "#version 410\n \ layout(location=0) in vec4 position; \ layout(location=1) in vec4 colour; \ out vec4 vColour; \ uniform mat4 projectionViewWorldMatrix; \ void main() {vColour = colour; gl_Position = projectionViewWorldMatrix * position; }";
-	const char* vsSource;
-	std::string s = GetShader("shader.txt");
-
-	vsSource = s.c_str();
+	const char* vsSource;						//This will be the shader source
+	std::string s = GetShader("shader.txt");	//Get shader in the form of a string
+	vsSource = s.c_str();						//Makes string into a const char array.
 
 	const char* fsSource = "#version 410\n \ in vec4 vColour; \ out vec4 fragColor; \ void main() { fragColor = vColour; }";
 
@@ -71,17 +69,20 @@ bool RenderingGeometry::Start()
 	glDeleteShader(fragmentShader);
 	glDeleteShader(vertexShader);
 
-
-
 	return true;
 }
 
 bool RenderingGeometry::Update()
 {
+	//Calculate delta time
+	current = (float)glfwGetTime();
+	delta = current - previous;
+	previous = current;
+
 	//If window is open
 	if (glfwWindowShouldClose(window) == false && glfwGetKey(window, GLFW_KEY_ESCAPE) != GLFW_PRESS) {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
+		Gizmos::clear();
 		return true;
 	}
 	return false;
@@ -97,13 +98,14 @@ void RenderingGeometry::Draw()
 	//Sending the Matrix here
 	unsigned int projectionViewUniform = glGetUniformLocation(m_programID, "projectionViewWorldMatrix");
 
-	//Send Matrix
-	glUniformMatrix4fv(projectionViewUniform, 1, false, glm::value_ptr(m_projectionViewMatrix));
+	glUniformMatrix4fv(projectionViewUniform, 1, false, glm::value_ptr(cam.getProjectionView()));
 
 	//Draw
 	glBindVertexArray(m_VAO);
-	glDrawElements(GL_TRIANGLE_STRIP, 4, GL_UNSIGNED_INT, 0); 
-											
+	glDrawElements(GL_TRIANGLE_STRIP, 18, GL_UNSIGNED_INT, 0);
+	
+	cam.update(delta, window);
+
 	glfwSwapBuffers(window);
 	glfwPollEvents();
 }
@@ -115,6 +117,7 @@ void RenderingGeometry::Shutdown()
 	glDeleteVertexArrays(1, &m_VAO);	//Clear vertex Arraies
 	glDeleteBuffers(1, &m_VBO);			//Clear Buffers
 	glDeleteBuffers(1, &m_IBO);
+	Gizmos::destroy();
 
 	glfwDestroyWindow(window);			//Terminate window
 	glfwTerminate();
@@ -185,3 +188,59 @@ std::string RenderingGeometry::GetShader(std::string text)
 	return shader;
 }
 
+void RenderingGeometry::MakeCube()
+{
+	//Create Vertex Points
+	Vertex vertices[8];
+	unsigned int indices[18] = { 0,1,2,3,6,7,4,5,6,4,2,0,3,1,5,7 };		//http://www.learnopengles.com/tag/triangle-strips/
+
+	vertices[0].position = vec4(-2, 0, -2, 1);
+	vertices[1].position = vec4(2, 0, -2, 1);
+	vertices[2].position = vec4(-2, 0, 2, 1);
+	vertices[3].position = vec4(2, 0, 2, 1);
+	vertices[4].position = vec4(-2, 4, -2, 1);
+	vertices[5].position = vec4(2, 4, -2, 1);
+	vertices[6].position = vec4(-2, 4, 2, 1);
+	vertices[7].position = vec4(2, 4, 2, 1);
+
+	vertices[0].color = vec4(1, 0, 0, 1);
+	vertices[1].color = vec4(0, 1, 0, 1);
+	vertices[2].color = vec4(0, 0, 1, 1);
+	vertices[3].color = vec4(.5, .5, .5, 1);
+	vertices[4].color = vec4(1, 0, 0, 1);
+	vertices[5].color = vec4(0, 1, 0, 1);
+	vertices[6].color = vec4(0, 0, 1, 1);
+	vertices[7].color = vec4(.5, .5, .5, 1);
+
+	//Create the Data for OpenGL to look at
+
+	//Generate buffers
+	glGenBuffers(1, &m_VBO);
+	glGenBuffers(1, &m_IBO);
+
+	//Generate Vertex Array Object. VAO
+	glGenVertexArrays(1, &m_VAO);
+
+	//Changes will be put on this guy
+	glBindVertexArray(m_VAO);
+
+	//Set the Vertex Buffer's data
+	glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
+	glBufferData(GL_ARRAY_BUFFER, 8 * sizeof(Vertex), vertices, GL_STATIC_DRAW);
+
+	//Indeies data
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_IBO);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, 18 * sizeof(unsigned int), indices, GL_STATIC_DRAW);
+
+	//Position of Verteies
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), 0);
+
+	//Colors
+	glEnableVertexAttribArray(1);
+	glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(sizeof(vec4)));
+
+	glBindVertexArray(0);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+}

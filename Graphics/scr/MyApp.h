@@ -39,8 +39,6 @@ public:
 private:
 	GLFWwindow* window;
 	FlyCamera cam;
-	/*mat4 view;
-	mat4 projection;*/
 
 	vec4 white;
 	vec4 black;
@@ -71,6 +69,7 @@ public:
 	void Shutdown() override;
 	void MakePlane();
 	std::string GetShader(std::string text);
+	void MakeCube();
 	unsigned int m_VAO;
 	unsigned int m_VBO;
 	unsigned int m_IBO;
