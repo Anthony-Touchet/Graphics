@@ -73,6 +73,7 @@ public:
 	unsigned int m_VBO;
 	unsigned int m_IBO;
 	unsigned int m_programID;
+	GLfloat m_time;
 	mat4 m_projectionViewMatrix;
 
 private:

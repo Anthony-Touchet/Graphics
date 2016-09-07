@@ -137,6 +137,10 @@
     <ClCompile Include="scr\RenderingGeo.cpp" />
     <ClCompile Include="scr\SolarSystem.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="frag.frag" />
+    <None Include="shader.vert" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

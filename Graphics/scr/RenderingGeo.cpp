@@ -35,10 +35,13 @@ bool RenderingGeometry::Start()
 
 	//Shaders
 	const char* vsSource;						//This will be the shader source
-	std::string s = GetShader("shader.txt");	//Get shader in the form of a string
-	vsSource = s.c_str();						//Makes string into a const char array.
+	std::string vs = GetShader("shader.vert");	//Get shader in the form of a string
+	vsSource = vs.c_str();						//Makes string into a const char array.
 
-	const char* fsSource = "#version 410\n \ in vec4 vColour; \ out vec4 fragColor; \ void main() { fragColor = vColour; }";
+	const char* fsSource;/* = "#version 410\n \ in vec4 vColour; \ out vec4 fragColor; \ void main() { fragColor = vColour; }"*/
+
+	std::string fs = GetShader("frag.frag");
+	fsSource = fs.c_str();
 
 	//Compiles Shaders
 	int success = GL_FALSE;
@@ -94,12 +97,12 @@ void RenderingGeometry::Draw()
 	
 	//Get the info
 	glUseProgram(m_programID);
-
+	
 	//Sending the Matrix here
 	unsigned int projectionViewUniform = glGetUniformLocation(m_programID, "projectionViewWorldMatrix");
-
+	unsigned int timeHandle = glGetUniformLocation(m_programID, "Time");
 	glUniformMatrix4fv(projectionViewUniform, 1, false, glm::value_ptr(cam.getProjectionView()));
-
+	glUniform1f(timeHandle, current);
 	//Draw
 	glBindVertexArray(m_VAO);
 	glDrawElements(GL_TRIANGLE_STRIP, 17, GL_UNSIGNED_INT, 0);
@@ -176,7 +179,7 @@ std::string RenderingGeometry::GetShader(std::string text)
 {
 	std::string line;
 	std::string shader;
-	std::ifstream file("shader.txt");
+	std::ifstream file(text);
 	if (file.is_open())
 	{
 		while (std::getline(file, line)) {
@@ -210,7 +213,7 @@ void RenderingGeometry::MakeCube()
 	vertices[4].color = vec4(1, 1, 0, 1);
 	vertices[5].color = vec4(0, 1, 1, 1);
 	vertices[6].color = vec4(1, 0, 1, 1);
-	vertices[7].color = vec4(1, 1, 1, 1);
+	vertices[7].color = vec4(.35, .35, .35, 1);
 
 	//Create the Data for OpenGL to look at
 
