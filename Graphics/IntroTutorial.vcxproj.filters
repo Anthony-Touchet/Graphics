@@ -21,10 +21,10 @@
     <ClInclude Include="scr\Camera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="scr\Gizmos.h">
+    <ClInclude Include="..\dep\Gizmos.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="scr\gl_core_4_4.h">
+    <ClInclude Include="..\dep\gl_core_4_4.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -41,10 +41,10 @@
     <ClCompile Include="scr\RenderingGeo.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="scr\Gizmos.cpp">
+    <ClCompile Include="..\dep\Gizmos.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="scr\gl_core_4_4.c">
+    <ClCompile Include="..\dep\gl_core_4_4.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

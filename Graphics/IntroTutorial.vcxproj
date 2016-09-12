@@ -74,8 +74,8 @@
     <LibraryPath>$(SolutionDir)dep\glm;$(SolutionDir)dep\glfw\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(SolutionDir)dep\glm;$(SolutionDir)dep\glfw\include;$(SolutionDir)Graphics\scr;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)dep\glfw\lib;$(SolutionDir)dep\glm;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)dep\glm;$(SolutionDir)dep\glfw\include;$(SolutionDir)dep;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)dep\glfw\lib;$(SolutionDir)dep\glm;$(SolutionDir)dep;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -94,7 +94,7 @@
       <SDLCheck>true</SDLCheck>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>glfw3.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -124,15 +124,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\dep\Gizmos.h" />
+    <ClInclude Include="..\dep\gl_core_4_4.h" />
     <ClInclude Include="scr\Camera.h" />
-    <ClInclude Include="scr\Gizmos.h" />
-    <ClInclude Include="scr\gl_core_4_4.h" />
     <ClInclude Include="scr\MyApp.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\dep\Gizmos.cpp" />
+    <ClCompile Include="..\dep\gl_core_4_4.c" />
     <ClCompile Include="scr\Camera.cpp" />
-    <ClCompile Include="scr\Gizmos.cpp" />
-    <ClCompile Include="scr\gl_core_4_4.c" />
     <ClCompile Include="scr\main.cpp" />
     <ClCompile Include="scr\RenderingGeo.cpp" />
     <ClCompile Include="scr\SolarSystem.cpp" />

@@ -31,7 +31,7 @@ RenderingGeometry::RenderingGeometry()
 
 bool RenderingGeometry::Start()
 {
-	MakeDisc();	//Generates cube
+	MakeDisc();	//Generates disc
 
 	//Shaders
 	const char* vsSource;						//Vertex Shader
@@ -105,7 +105,7 @@ void RenderingGeometry::Draw()
 	glUniform1f(timeHandle, current);
 	//Draw
 	glBindVertexArray(m_VAO);
-	glDrawElements(GL_TRIANGLE_STRIP, 17, GL_UNSIGNED_INT, 0);
+	glDrawElements(GL_TRIANGLE_STRIP, 100, GL_UNSIGNED_INT, 0);
 	
 	cam.update(delta, window);
 
@@ -250,24 +250,39 @@ void RenderingGeometry::MakeCube()
 
 void RenderingGeometry::MakeDisc()
 {
-	//Create Vertex Points
-	Vertex vertices[5];
-	unsigned int indices[] = { 0,1,2,0,2,3,0,3,4,0,4,1 };		//http://www.learnopengles.com/tag/triangle-strips/
+	const int radius = 10;
+	const int verts = 4;						//Number of oustide verts
+	Vertex vertices[verts + 1];					//+1 accounts for center we will set static
+	unsigned int indices[(verts * 3) + 3];		//http://www.learnopengles.com/tag/triangle-strips/
 
-	vertices[0].position = vec4(0, 0, 0, 1);
-	vertices[1].position = vec4(2, 0, 0, 1);
-	vertices[2].position = vec4(0, 0, 2, 1);
-	vertices[3].position = vec4(-2, 0, 0, 1);
-	vertices[4].position = vec4(0, 0, -2, 1);
+	//Generate verts
+	vertices[0].position = vec4(0, 0, 0, 1);	//Static set center
+	vertices[0].color = vec4(1,1,0,1);
+	
+	for (int i = 1; i < verts + 1; i++) {	//Wrong calculations need fixing
+		vertices[i].position = vec4 (radius * std::cos(i * (360/ verts)), 0 , radius * std::sin(i * (360 / verts)), 1);
+		vertices[i].color = vec4(1, 1, 0, 1);
+	}
 
-	vertices[0].color = vec4(1, 0, 0, 1);
-	vertices[1].color = vec4(0, 1, 0, 1);
-	vertices[2].color = vec4(0, 0, 1, 1);
-	vertices[3].color = vec4(.5, .5, .5, 1);
-	vertices[4].color = vec4(1, 1, 0, 1);
+	int num = 1;
+	//Gen Indicies	 Pattern that seem to work on an earlier version: 0,1,2,0,2,3,0,3,4,0,4,1
+	for (int i = 0; i <= (verts * 3) + 1; i+=3) {
+		if (num + 2 > verts) {
+			indices[i] = 0;
+			indices[i + 1] = num;
+			indices[i + 2] = 1;
+		}
+
+		else {
+			indices[i] = 0;
+			indices[i + 1] = num;
+			indices[i + 2] = num + 1;
+		}
+
+		num++;
+	}
 
 	//Create the Data for OpenGL to look at
-
 	//Generate buffers
 	glGenBuffers(1, &m_VBO);
 	glGenBuffers(1, &m_IBO);
@@ -280,11 +295,11 @@ void RenderingGeometry::MakeDisc()
 
 	//Set the Vertex Buffer's data
 	glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
-	glBufferData(GL_ARRAY_BUFFER, 5 * sizeof(Vertex), vertices, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, verts * sizeof(Vertex), vertices, GL_STATIC_DRAW);
 
 	//Indeies data
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_IBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, 12 * sizeof(unsigned int), indices, GL_STATIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, ((verts * 3) + 3) * sizeof(unsigned int), indices, GL_STATIC_DRAW);
 
 	//Position of Verteies
 	glEnableVertexAttribArray(0);
