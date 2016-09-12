@@ -16,12 +16,12 @@ int FindLengthOfArray(char* a) {
 	return result;
 }
 
-int main() {
-
-	char ex[] = { "Hello" };
-
-	IsFunctionGood(FindLengthOfArray, ex);
-
-	system("pause");
-	return 0;
-}
+//int main() {
+//
+//	char ex[] = { "Hello" };
+//
+//	IsFunctionGood(FindLengthOfArray, ex);
+//
+//	system("pause");
+//	return 0;
+//}

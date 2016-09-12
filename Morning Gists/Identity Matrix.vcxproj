@@ -22,6 +22,7 @@
     <ProjectGuid>{27C9B7F4-3968-4005-B708-6619BBCF0504}</ProjectGuid>
     <RootNamespace>IdentityMatrix</RootNamespace>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+    <ProjectName>Morning Gists</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -110,6 +111,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AddingOverload.cpp" />
     <ClCompile Include="CharacherArrayLength.cpp" />
     <ClCompile Include="FunctionPointer.cpp" />
     <ClCompile Include="Identity.cpp" />

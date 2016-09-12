@@ -36,5 +36,8 @@
     <ClCompile Include="CharacherArrayLength.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="AddingOverload.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
