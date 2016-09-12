@@ -109,7 +109,7 @@ void RenderingGeometry::Draw()
 	glUniform1f(timeHandle, current);
 	//Draw
 	glBindVertexArray(m_VAO);
-	glDrawElements(GL_TRIANGLE_STRIP, indexCount, GL_UNSIGNED_INT, 0);
+	glDrawElements(GL_LINE_LOOP, indexCount, GL_UNSIGNED_INT, 0);
 	
 	cam.update(delta, window);
 
@@ -325,11 +325,22 @@ void RenderingGeometry::MakeShpere()
 {
 	const int radius = 1;
 	const unsigned int verts = 6;
-	Vertex vertices[verts + 1];					//+1 accounts for center we will set static
-	unsigned int indices[(verts * 3)];			//off set by 3. 
-	indexCount = (verts * 3);					//Set index count
+	Vertex vertices[(verts + 1) * (verts + 1)];
+	unsigned int indices[((verts + 1) * (verts + 1)) * 3];			//off set by 3. 
+	indexCount = ((verts + 1) * (verts + 1)) * 3;					//Set index count
 
 	GenVertexes(verts, vertices, radius);
+
+	//unsigned int cont = verts + 1;
+
+	//for (int i = 1; i <= verts + 1; i++) {
+	//	double phi = (2 * M_PI) * (i / verts);
+	//	for (int j = 0; j <= verts; j++, cont++) {
+	//		vertices[cont].position.x = vertices[j].position.x * std::cos(phi) + vertices[j].position.z * std::sin(phi);
+	//		vertices[cont].position.y = vertices[j].position.y;
+	//		vertices[cont].position.z = vertices[j].position.x * std::cos(phi) - vertices[j].position.z * std::sin(phi);
+	//	}
+	//}
 
 	int num = 1;
 	for (int i = 0; i < indexCount; i += 3, num++) {	//Increace by three for three vertexes for each triangle. Set three indicies at once per loop
@@ -359,7 +370,7 @@ void RenderingGeometry::MakeShpere()
 
 	//Set the Vertex Buffer's data
 	glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
-	glBufferData(GL_ARRAY_BUFFER, (verts + 1) * sizeof(Vertex), vertices, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, ((verts + 1) * (verts + 1)) * sizeof(Vertex), vertices, GL_STATIC_DRAW);
 
 	//Indeies data
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_IBO);
