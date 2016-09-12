@@ -1,5 +1,6 @@
 #include "MyApp.h"
-#include <math.h>
+
+//http://www.learnopengles.com/tag/triangle-strips/
 
 RenderingGeometry::RenderingGeometry()
 {
@@ -106,7 +107,7 @@ void RenderingGeometry::Draw()
 	glUniform1f(timeHandle, current);
 	//Draw
 	glBindVertexArray(m_VAO);
-	glDrawElements(GL_TRIANGLE_STRIP, 100, GL_UNSIGNED_INT, 0);
+	glDrawElements(GL_TRIANGLE_STRIP, indexCount, GL_UNSIGNED_INT, 0);
 	
 	cam.update(delta, window);
 
@@ -132,6 +133,8 @@ void RenderingGeometry::MakePlane()
 	//Create Vertex Points
 	Vertex vertices[4];
 	unsigned int indices[4] = { 0,1,2,3 };
+
+	indexCount = 4;
 
 	vertices[0].position = vec4(-5, 0, -5, 1);
 	vertices[1].position = vec4(5, 0, -5, 1);
@@ -198,6 +201,8 @@ void RenderingGeometry::MakeCube()
 	Vertex vertices[8];
 	unsigned int indices[17] = { 0,1,2,3,6,7,4,5,0,1,5,3,7,6,4,2,0};		//http://www.learnopengles.com/tag/triangle-strips/
 
+	indexCount = 17;
+
 	vertices[0].position = vec4(-2, 0, -2, 1);
 	vertices[1].position = vec4(2, 0, -2, 1);
 	vertices[2].position = vec4(-2, 0, 2, 1);
@@ -252,25 +257,25 @@ void RenderingGeometry::MakeCube()
 void RenderingGeometry::MakeDisc()
 {
 	const int radius = 5;
-	const int verts = 10;						//Number of oustide verts
+	const int verts = 100;						//Number of oustide verts
 	Vertex vertices[verts + 1];					//+1 accounts for center we will set static
-	unsigned int indices[(verts * 3) + 3];		//http://www.learnopengles.com/tag/triangle-strips/
-	const float PI = 3.14159265;
+	unsigned int indices[(verts * 3) + 3];		//off set by 3. 
+	indexCount = (verts * 3) + 3;
+	const float PI = 3.14159265;				//My constant for PI
 
 	//Generate verts
 	vertices[0].position = vec4(0, 0, 0, 1);	//Static set center
 	vertices[0].color = vec4(1,1,0,1);
 	
-	for (int i = 1; i <= verts; i++) {
+	for (int i = 1; i <= verts; i++) {	//Calculate all outside verticies
 		vertices[i].position = vec4 (radius * std::cos(i * ((PI * 2)/ verts)), 0 , radius * std::sin(i * ((PI * 2) / verts)), 1);
-		
-		(i <= 9) ? vertices[i].color = vec4(1, 0, 0, 1) : vertices[i].color = vec4(1, 1, 0, 1);
+		vertices[i].color = vec4(1, 1, 0, 1);
 	}
 
-	int num = 1;
+	int num = 1;	//Tells what vert will be filled into the slot
 	//Gen Indicies	 Pattern that seem to work on an earlier version: 0,1,2,0,2,3,0,3,4,0,4,1
-	for (int i = 0; i < (verts * 3) + 3; i+=3) {
-		if (num > verts) {
+	for (int i = 0; i < indexCount; i+=3, num++) {	//Increace by three for three vertexes for each triangle. Set three indicies at once per loop
+		if (num > verts) {	
 			indices[i] = 0;
 			indices[i + 1] = num - 1;
 			indices[i + 2] = 1;
@@ -281,8 +286,6 @@ void RenderingGeometry::MakeDisc()
 			indices[i + 1] = num;
 			indices[i + 2] = num + 1;
 		}
-
-		num++;
 	}
 
 	//Create the Data for OpenGL to look at
@@ -302,7 +305,7 @@ void RenderingGeometry::MakeDisc()
 
 	//Indeies data
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_IBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, ((verts * 3) + 3) * sizeof(unsigned int), indices, GL_STATIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, (indexCount * sizeof(unsigned int)), indices, GL_STATIC_DRAW);
 
 	//Position of Verteies
 	glEnableVertexAttribArray(0);
