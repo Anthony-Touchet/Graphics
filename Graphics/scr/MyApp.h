@@ -58,9 +58,17 @@ private:
 	float angle = 0;
 };
 
+struct  Vertex
+	{
+		vec4 position;
+		vec4 color;
+	};
+
 class RenderingGeometry : public Application {
 
 public:
+	
+
 	RenderingGeometry();
 	bool Start() override;
 	bool Update() override;
@@ -70,6 +78,8 @@ public:
 	std::string GetShader(std::string text);
 	void MakeCube();
 	void MakeDisc();
+	void MakeShpere();
+	Vertex* GenVertexes(unsigned int p, Vertex* verts, const int &rad);
 	unsigned int m_VAO;
 	unsigned int m_VBO;
 	unsigned int m_IBO;
@@ -87,9 +97,5 @@ private:
 	float current;
 	float delta;
 
-	struct  Vertex
-	{
-		vec4 position;
-		vec4 color;
-	};
+	
 };

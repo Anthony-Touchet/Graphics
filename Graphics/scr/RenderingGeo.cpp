@@ -1,4 +1,6 @@
 #include "MyApp.h"
+#define _USE_MATH_DEFINES
+#include <math.h>
 
 //http://www.learnopengles.com/tag/triangle-strips/
 
@@ -33,7 +35,7 @@ RenderingGeometry::RenderingGeometry()
 
 bool RenderingGeometry::Start()
 {
-	MakeDisc();	//Generates disc
+	MakeShpere();	//Generates disc
 
 	//Shaders
 	const char* vsSource;						//Vertex Shader
@@ -257,23 +259,22 @@ void RenderingGeometry::MakeCube()
 void RenderingGeometry::MakeDisc()
 {
 	const int radius = 5;
-	const int verts = 100;						//Number of oustide verts
+	const int verts = 25;						//Number of oustide verts
 	Vertex vertices[verts + 1];					//+1 accounts for center we will set static
 	unsigned int indices[(verts * 3) + 3];		//off set by 3. 
-	indexCount = (verts * 3) + 3;
-	const float PI = 3.14159265;				//My constant for PI
+	indexCount = (verts * 3) + 3;				//Set index count
 
 	//Generate verts
 	vertices[0].position = vec4(0, 0, 0, 1);	//Static set center
 	vertices[0].color = vec4(1,1,0,1);
 	
 	for (int i = 1; i <= verts; i++) {	//Calculate all outside verticies
-		vertices[i].position = vec4 (radius * std::cos(i * ((PI * 2)/ verts)), 0 , radius * std::sin(i * ((PI * 2) / verts)), 1);
+		vertices[i].position = vec4 (radius * std::cos(i * ((M_PI * 2)/ verts)), 0 , radius * std::sin(i * ((M_PI * 2) / verts)), 1);
 		vertices[i].color = vec4(1, 1, 0, 1);
 	}
 
 	int num = 1;	//Tells what vert will be filled into the slot
-	//Gen Indicies	 Pattern that seem to work on an earlier version: 0,1,2,0,2,3,0,3,4,0,4,1
+	//Gen Indicies
 	for (int i = 0; i < indexCount; i+=3, num++) {	//Increace by three for three vertexes for each triangle. Set three indicies at once per loop
 		if (num > verts) {	
 			indices[i] = 0;
@@ -319,3 +320,72 @@ void RenderingGeometry::MakeDisc()
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
+
+void RenderingGeometry::MakeShpere()
+{
+	const int radius = 1;
+	const unsigned int verts = 6;
+	Vertex vertices[verts + 1];					//+1 accounts for center we will set static
+	unsigned int indices[(verts * 3)];			//off set by 3. 
+	indexCount = (verts * 3);					//Set index count
+
+	GenVertexes(verts, vertices, radius);
+
+	int num = 1;
+	for (int i = 0; i < indexCount; i += 3, num++) {	//Increace by three for three vertexes for each triangle. Set three indicies at once per loop
+		if (num + 1 > verts) {	//connect end
+			indices[i] = 0;
+			indices[i + 1] = num;
+			indices[i + 2] = 0;
+		}
+
+		else {
+			indices[i] = 0;
+			indices[i + 1] = num;
+			indices[i + 2] = num + 1;
+		}
+	}
+
+	//Create the Data for OpenGL to look at
+	//Generate buffers
+	glGenBuffers(1, &m_VBO);
+	glGenBuffers(1, &m_IBO);
+
+	//Generate Vertex Array Object. VAO
+	glGenVertexArrays(1, &m_VAO);
+
+	//Changes will be put on this guy
+	glBindVertexArray(m_VAO);
+
+	//Set the Vertex Buffer's data
+	glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
+	glBufferData(GL_ARRAY_BUFFER, (verts + 1) * sizeof(Vertex), vertices, GL_STATIC_DRAW);
+
+	//Indeies data
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_IBO);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, (indexCount * sizeof(unsigned int)), indices, GL_STATIC_DRAW);
+
+	//Position of Verteies
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), 0);
+
+	//Colors
+	glEnableVertexAttribArray(1);
+	glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(sizeof(vec4)));
+
+	glBindVertexArray(0);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+}
+
+Vertex* RenderingGeometry::GenVertexes(unsigned int p, Vertex* verts, const int &rad)
+{
+	for (int i = 0; i <= p; i++)
+	{
+		//verts[i].position = vec4(rad * std::cos(i * (M_PI / p)), rad * std::sin(i * (M_PI / p)), 0, 1);
+		verts[i].position = vec4(rad * std::sin(i * (M_PI / p)), rad * std::cos(i * (M_PI / p)), 0, 1);
+		verts[i].color = vec4(0, 0, 0, 1);
+	}
+	return verts;
+}
+
