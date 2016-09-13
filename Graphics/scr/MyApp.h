@@ -79,8 +79,9 @@ public:
 	void MakeCube();
 	void MakeDisc();
 	void MakeShpere();
-	Vertex* GenVertexes(unsigned int p, const int &rad);
-	Vertex * GenSphere(const unsigned int & sides, const unsigned int &mirid, Vertex *& halfCircle);
+	Vertex* GenHalfCircleVertexes(unsigned int p, const int &rad);
+	Vertex * GenSphereVerts(const unsigned int & sides, const unsigned int &mirid, Vertex *& halfCircle);
+	unsigned int* GenSphereIndicies(const unsigned int &verts, const unsigned int &mird);
 
 	unsigned int m_VAO;
 	unsigned int m_VBO;

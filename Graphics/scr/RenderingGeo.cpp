@@ -97,6 +97,7 @@ bool RenderingGeometry::Update()
 
 void RenderingGeometry::Draw()
 {
+	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	
 	//Get the info
@@ -110,7 +111,10 @@ void RenderingGeometry::Draw()
 	//Draw
 	glBindVertexArray(m_VAO);
 
-	glPointSize(3.f);
+	glEnable(GL_PRIMITIVE_RESTART);
+	glPrimitiveRestartIndex(NULL);
+	glPointSize(5.f);
+
 	glDrawElements(GL_POINTS, indexCount, GL_UNSIGNED_INT, 0);
 	
 	cam.update(delta, window);
@@ -325,23 +329,20 @@ void RenderingGeometry::MakeDisc()
 
 void RenderingGeometry::MakeShpere()
 {
-	const int radius = 6;
-	const unsigned int verts = 50;
-	const unsigned int halfCircles = 20;
+	const int radius = 3;
+	const unsigned int verts = 10;
+	const unsigned int halfCircles = 10;
 
-	const unsigned int size = (verts + 1) * (halfCircles + 1);
+	const unsigned int size = (verts) * (halfCircles);
 
-	Vertex* vertices = new Vertex[(verts + 1) * (halfCircles + 1)];
-	unsigned int indices[((verts + 1) * (halfCircles + 1))];
-	indexCount = ((verts + 1) * (halfCircles + 1));
+	Vertex* vertices = new Vertex[verts * halfCircles];	
+	unsigned int* indices = new unsigned int[verts * halfCircles];
+	indexCount = (verts + 1) * halfCircles;
 
-	Vertex* halfCircleVerts = GenVertexes(verts, radius);
-	
-	vertices = GenSphere(verts, halfCircles, halfCircleVerts);
+	Vertex* halfCircleVerts = GenHalfCircleVertexes(verts, radius);			//Generate Half Circle
+	vertices = GenSphereVerts(verts, halfCircles, halfCircleVerts);			//Generate Sphere Verticies
 
-	for (int i = 0; i < (verts + 1) * (halfCircles + 1); i++) {
-		indices[i] = i;
-	}
+	indices = GenSphereIndicies(verts, halfCircles);
 
 	//Create the Data for OpenGL to look at
 	//Generate buffers
@@ -375,7 +376,7 @@ void RenderingGeometry::MakeShpere()
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
 
-Vertex* RenderingGeometry::GenVertexes(unsigned int p, const int &rad)
+Vertex* RenderingGeometry::GenHalfCircleVertexes(unsigned int p, const int &rad)
 {
 	Vertex* verts = new Vertex[p];
 
@@ -387,13 +388,13 @@ Vertex* RenderingGeometry::GenVertexes(unsigned int p, const int &rad)
 	return verts;
 }
 
-Vertex* RenderingGeometry::GenSphere(const unsigned int &sides, const unsigned int &mirid, Vertex *&halfCircle) {
+Vertex* RenderingGeometry::GenSphereVerts(const unsigned int &sides, const unsigned int &mirid, Vertex *&halfCircle) {
 	int cont = 0;
 	Vertex* verts = new Vertex[(sides + 1) * (mirid + 1)];
 
 	//Lathe Half sphere.
 	for (int i = 0; i < mirid; i++) {
-		float phi = 2.f * PI * (float)i / (float)(mirid - 1);
+		float phi = 2.f * PI * (float)i / (float)(mirid);
 		for (int j = 0; j < sides; j++, cont++) {
 			float x = halfCircle[j].position.x;
 			float y = halfCircle[j].position.y * std::cos(phi) - halfCircle[j].position.z * std::sin(phi);
@@ -404,4 +405,22 @@ Vertex* RenderingGeometry::GenSphere(const unsigned int &sides, const unsigned i
 		}
 	}
 	return verts;
+}
+
+unsigned int * RenderingGeometry::GenSphereIndicies(const unsigned int &verts, const unsigned int &mird)
+{
+	unsigned int count = 0;
+	unsigned int* index = new unsigned int[(verts) * mird];
+	
+	for (int i = 0; i < mird; i++) {
+		unsigned int start = i * verts;
+		for (int j = 0; j < verts; j++, count++) {
+			unsigned int botR = (start + verts + j);
+			unsigned int botL = (start + j);
+
+			index[count] = botL;
+			index[count + 1] = botR;
+		}
+	}
+	return index;
 }
