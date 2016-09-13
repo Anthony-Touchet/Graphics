@@ -109,7 +109,9 @@ void RenderingGeometry::Draw()
 	glUniform1f(timeHandle, current);
 	//Draw
 	glBindVertexArray(m_VAO);
-	glDrawElements(GL_LINE_LOOP, indexCount, GL_UNSIGNED_INT, 0);
+
+	glPointSize(3.f);
+	glDrawElements(GL_POINTS, indexCount, GL_UNSIGNED_INT, 0);
 	
 	cam.update(delta, window);
 
@@ -324,36 +326,18 @@ void RenderingGeometry::MakeDisc()
 void RenderingGeometry::MakeShpere()
 {
 	const  int radius = 1;
-	const unsigned int sides = 5;
-	Vertex vertices[(sides + 1) * (sides + 1)];
-	unsigned int indices[((sides + 1) * (sides + 1)) * 3];			//off set by 3. 
-	indexCount = ((sides + 1) * (sides + 1)) * 3;					//Set index count
+	const unsigned int verts = 20;
+	const unsigned int halfCircles = 20;
+	Vertex* vertices = new Vertex[(verts + 1) * (verts + 1)];
+	unsigned int indices[((verts + 1) * (verts + 1)) * 3];
+	indexCount = ((verts + 1) * (verts + 1)) * 3;
 
+	Vertex* halfCircleVerts = GenVertexes(verts, radius);
+	
+	vertices = GenSphere(halfCircles, halfCircleVerts);
 
-	Vertex* halfCircle = GenVertexes(sides, vertices, radius);
-	int cont = sides + 1;
-	for (int i = 1; i <= sides; i++) {
-		double phi = 2 * PI * i / sides;
-		for (int j = 0; j < sides; j++, cont++) {
-			vertices[cont].position.x = vertices[j].position.x * std::cos(phi) + vertices[j].position.z * std::sin(phi);
-			vertices[cont].position.y = vertices[j].position.y;
-			vertices[cont].position.z = vertices[j].position.z * std::cos(phi) - vertices[j].position.x * std::sin(phi);
-  		}
-	}
-
-	int num = 1;
-	for (int i = 0; i < indexCount; i += 3, num++) {	//Increace by three for three vertexes for each triangle. Set three indicies at once per loop
-		if (num + 1 > sides) {	//connect end
-			indices[i] = 0;
-			indices[i + 1] = num;
-			indices[i + 2] = 0;
-		}
-
-		else {
-			indices[i] = 0;
-			indices[i + 1] = num;
-			indices[i + 2] = num + 1;
-		}
+	for (int i = 0; i < (verts + 1) * (verts + 1); i++) {
+		indices[i] = i;
 	}
 
 	//Create the Data for OpenGL to look at
@@ -369,7 +353,7 @@ void RenderingGeometry::MakeShpere()
 
 	//Set the Vertex Buffer's data
 	glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
-	glBufferData(GL_ARRAY_BUFFER, ((sides + 1) * (sides + 1)) * sizeof(Vertex), vertices, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, ((verts + 1) * (verts + 1)) * sizeof(Vertex), vertices, GL_STATIC_DRAW);
 
 	//Indeies data
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_IBO);
@@ -388,13 +372,34 @@ void RenderingGeometry::MakeShpere()
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
 
-Vertex* RenderingGeometry::GenVertexes(unsigned int p, Vertex* verts, const int &rad)
+Vertex* RenderingGeometry::GenVertexes(unsigned int p, const int &rad)
 {
-	for (int i = 0; i <= p; i++)
+	Vertex* verts = new Vertex[p];
+
+	for (int i = 0; i < p; i++)
 	{
-		float angle = PI * i / p - 1;
+		float angle = PI * i / (p - 1);
 		verts[i].position = vec4(rad * std::cos(angle), rad * std::sin(angle), 0, 1);
-		verts[i].color = vec4(0, 0, 0, 1);
+		verts[i].color = vec4(1, 0, 0, 1);
+	}
+	return verts;
+}
+
+Vertex* RenderingGeometry::GenSphere(const unsigned int &sides, Vertex* &halfCricle) {
+	int cont = sides;
+	Vertex* verts = new Vertex[(sides + 1) * (sides + 1)];
+
+	//Lathe Half sphere.
+	for (int i = 0; i < sides; i++) {
+		float phi = 2.f * PI * (float)i / (float)(sides - 1);
+		for (int j = 0; j < sides; j++, cont++) {
+			float x = halfCricle[j].position.x;
+			float y = halfCricle[j].position.y * std::cos(phi) - halfCricle[j].position.z * std::sin(phi);
+			float z = halfCricle[j].position.z * std::cos(phi) + halfCricle[j].position.y * std::sin(phi);
+
+			verts[cont].position = vec4(x, y, z, 1);
+			verts[cont].color = vec4(1,0,0,1);
+		}
 	}
 	return verts;
 }
