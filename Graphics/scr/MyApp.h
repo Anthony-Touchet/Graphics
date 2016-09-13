@@ -83,6 +83,8 @@ public:
 	Vertex * GenSphereVerts(const unsigned int & sides, const unsigned int &mirid, Vertex *& halfCircle);
 	unsigned int* GenSphereIndicies(const unsigned int &verts, const unsigned int &mird);
 
+	void PrintVerts(Vertex * v, int stop);
+
 	unsigned int m_VAO;
 	unsigned int m_VBO;
 	unsigned int m_IBO;

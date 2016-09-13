@@ -35,7 +35,7 @@ RenderingGeometry::RenderingGeometry()
 
 bool RenderingGeometry::Start()
 {
-	MakeShpere();	//Generates disc
+	MakeShpere();	
 
 	//Shaders
 	const char* vsSource;						//Vertex Shader
@@ -343,7 +343,7 @@ void RenderingGeometry::MakeShpere()
 	vertices = GenSphereVerts(verts, halfCircles, halfCircleVerts);			//Generate Sphere Verticies
 
 	indices = GenSphereIndicies(verts, halfCircles);
-
+	PrintVerts(vertices, size);
 	//Create the Data for OpenGL to look at
 	//Generate buffers
 	glGenBuffers(1, &m_VBO);
@@ -423,4 +423,11 @@ unsigned int * RenderingGeometry::GenSphereIndicies(const unsigned int &verts, c
 		}
 	}
 	return index;
+}
+
+void RenderingGeometry::PrintVerts(Vertex* v, int stop) {
+	for (int i = 0; i < stop; i++)
+	{
+		std::cout << v[i].color.x << std::endl;
+	}
 }
