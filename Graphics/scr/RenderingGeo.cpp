@@ -323,28 +323,27 @@ void RenderingGeometry::MakeDisc()
 
 void RenderingGeometry::MakeShpere()
 {
-	const int radius = 1;
-	const unsigned int verts = 6;
-	Vertex vertices[(verts + 1) * (verts + 1)];
-	unsigned int indices[((verts + 1) * (verts + 1)) * 3];			//off set by 3. 
-	indexCount = ((verts + 1) * (verts + 1)) * 3;					//Set index count
+	const  int radius = 1;
+	const unsigned int sides = 5;
+	Vertex vertices[(sides + 1) * (sides + 1)];
+	unsigned int indices[((sides + 1) * (sides + 1)) * 3];			//off set by 3. 
+	indexCount = ((sides + 1) * (sides + 1)) * 3;					//Set index count
 
-	GenVertexes(verts, vertices, radius);
 
-	//unsigned int cont = verts + 1;
-
-	//for (int i = 1; i <= verts + 1; i++) {
-	//	double phi = (2 * M_PI) * (i / verts);
-	//	for (int j = 0; j <= verts; j++, cont++) {
-	//		vertices[cont].position.x = vertices[j].position.x * std::cos(phi) + vertices[j].position.z * std::sin(phi);
-	//		vertices[cont].position.y = vertices[j].position.y;
-	//		vertices[cont].position.z = vertices[j].position.x * std::cos(phi) - vertices[j].position.z * std::sin(phi);
-	//	}
-	//}
+	Vertex* halfCircle = GenVertexes(sides, vertices, radius);
+	int cont = sides + 1;
+	for (int i = 1; i <= sides; i++) {
+		double phi = 2 * PI * i / sides;
+		for (int j = 0; j < sides; j++, cont++) {
+			vertices[cont].position.x = vertices[j].position.x * std::cos(phi) + vertices[j].position.z * std::sin(phi);
+			vertices[cont].position.y = vertices[j].position.y;
+			vertices[cont].position.z = vertices[j].position.z * std::cos(phi) - vertices[j].position.x * std::sin(phi);
+  		}
+	}
 
 	int num = 1;
 	for (int i = 0; i < indexCount; i += 3, num++) {	//Increace by three for three vertexes for each triangle. Set three indicies at once per loop
-		if (num + 1 > verts) {	//connect end
+		if (num + 1 > sides) {	//connect end
 			indices[i] = 0;
 			indices[i + 1] = num;
 			indices[i + 2] = 0;
@@ -370,7 +369,7 @@ void RenderingGeometry::MakeShpere()
 
 	//Set the Vertex Buffer's data
 	glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
-	glBufferData(GL_ARRAY_BUFFER, ((verts + 1) * (verts + 1)) * sizeof(Vertex), vertices, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, ((sides + 1) * (sides + 1)) * sizeof(Vertex), vertices, GL_STATIC_DRAW);
 
 	//Indeies data
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_IBO);
@@ -393,10 +392,9 @@ Vertex* RenderingGeometry::GenVertexes(unsigned int p, Vertex* verts, const int 
 {
 	for (int i = 0; i <= p; i++)
 	{
-		//verts[i].position = vec4(rad * std::cos(i * (M_PI / p)), rad * std::sin(i * (M_PI / p)), 0, 1);
-		verts[i].position = vec4(rad * std::sin(i * (M_PI / p)), rad * std::cos(i * (M_PI / p)), 0, 1);
+		float angle = PI * i / p - 1;
+		verts[i].position = vec4(rad * std::cos(angle), rad * std::sin(angle), 0, 1);
 		verts[i].color = vec4(0, 0, 0, 1);
 	}
 	return verts;
 }
-

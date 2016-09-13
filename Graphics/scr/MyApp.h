@@ -96,6 +96,6 @@ private:
 	float previous = 0;
 	float current;
 	float delta;
-
+	float PI = 3.14159265359;
 	
 };
