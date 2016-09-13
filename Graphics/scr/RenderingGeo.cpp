@@ -325,18 +325,21 @@ void RenderingGeometry::MakeDisc()
 
 void RenderingGeometry::MakeShpere()
 {
-	const  int radius = 1;
-	const unsigned int verts = 20;
+	const int radius = 6;
+	const unsigned int verts = 50;
 	const unsigned int halfCircles = 20;
-	Vertex* vertices = new Vertex[(verts + 1) * (verts + 1)];
-	unsigned int indices[((verts + 1) * (verts + 1)) * 3];
-	indexCount = ((verts + 1) * (verts + 1)) * 3;
+
+	const unsigned int size = (verts + 1) * (halfCircles + 1);
+
+	Vertex* vertices = new Vertex[(verts + 1) * (halfCircles + 1)];
+	unsigned int indices[((verts + 1) * (halfCircles + 1))];
+	indexCount = ((verts + 1) * (halfCircles + 1));
 
 	Vertex* halfCircleVerts = GenVertexes(verts, radius);
 	
-	vertices = GenSphere(halfCircles, halfCircleVerts);
+	vertices = GenSphere(verts, halfCircles, halfCircleVerts);
 
-	for (int i = 0; i < (verts + 1) * (verts + 1); i++) {
+	for (int i = 0; i < (verts + 1) * (halfCircles + 1); i++) {
 		indices[i] = i;
 	}
 
@@ -353,7 +356,7 @@ void RenderingGeometry::MakeShpere()
 
 	//Set the Vertex Buffer's data
 	glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
-	glBufferData(GL_ARRAY_BUFFER, ((verts + 1) * (verts + 1)) * sizeof(Vertex), vertices, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, size * sizeof(Vertex), vertices, GL_STATIC_DRAW);
 
 	//Indeies data
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_IBO);
@@ -380,22 +383,21 @@ Vertex* RenderingGeometry::GenVertexes(unsigned int p, const int &rad)
 	{
 		float angle = PI * i / (p - 1);
 		verts[i].position = vec4(rad * std::cos(angle), rad * std::sin(angle), 0, 1);
-		verts[i].color = vec4(1, 0, 0, 1);
 	}
 	return verts;
 }
 
-Vertex* RenderingGeometry::GenSphere(const unsigned int &sides, Vertex* &halfCricle) {
-	int cont = sides;
-	Vertex* verts = new Vertex[(sides + 1) * (sides + 1)];
+Vertex* RenderingGeometry::GenSphere(const unsigned int &sides, const unsigned int &mirid, Vertex *&halfCircle) {
+	int cont = 0;
+	Vertex* verts = new Vertex[(sides + 1) * (mirid + 1)];
 
 	//Lathe Half sphere.
-	for (int i = 0; i < sides; i++) {
-		float phi = 2.f * PI * (float)i / (float)(sides - 1);
+	for (int i = 0; i < mirid; i++) {
+		float phi = 2.f * PI * (float)i / (float)(mirid - 1);
 		for (int j = 0; j < sides; j++, cont++) {
-			float x = halfCricle[j].position.x;
-			float y = halfCricle[j].position.y * std::cos(phi) - halfCricle[j].position.z * std::sin(phi);
-			float z = halfCricle[j].position.z * std::cos(phi) + halfCricle[j].position.y * std::sin(phi);
+			float x = halfCircle[j].position.x;
+			float y = halfCircle[j].position.y * std::cos(phi) - halfCircle[j].position.z * std::sin(phi);
+			float z = halfCircle[j].position.z * std::cos(phi) + halfCircle[j].position.y * std::sin(phi);
 
 			verts[cont].position = vec4(x, y, z, 1);
 			verts[cont].color = vec4(1,0,0,1);

@@ -80,7 +80,7 @@ public:
 	void MakeDisc();
 	void MakeShpere();
 	Vertex* GenVertexes(unsigned int p, const int &rad);
-	Vertex * GenSphere(const unsigned int & sides, Vertex *& halfCricle);
+	Vertex * GenSphere(const unsigned int & sides, const unsigned int &mirid, Vertex *& halfCircle);
 
 	unsigned int m_VAO;
 	unsigned int m_VBO;
