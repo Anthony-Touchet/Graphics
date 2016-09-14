@@ -112,7 +112,6 @@ void RenderingGeometry::Draw()
 
 	glEnable(GL_PRIMITIVE_RESTART);
 	glPrimitiveRestartIndex(0xFFFF);
-	glPointSize(5.f);
 
 	glDrawElements(GL_TRIANGLE_STRIP, indexCount, GL_UNSIGNED_INT, 0);
 	
@@ -334,15 +333,15 @@ void RenderingGeometry::MakeShpere()
 
 	const unsigned int size = (verts) * (halfCircles);
 
-	Vertex* vertices = new Vertex[verts * halfCircles];	
-	unsigned int* indices = new unsigned int[(verts + 1) * halfCircles];
-	indexCount = (verts + 1) * halfCircles;
+	Vertex* vertices = new Vertex[size];
+	unsigned int* indices;
+
 
 	Vertex* halfCircleVerts = GenHalfCircleVertexes(verts, radius);			//Generate Half Circle
 	vertices = GenSphereVerts(verts, halfCircles, halfCircleVerts);			//Generate Sphere Verticies
 
 	indices = GenSphereIndicies(verts, halfCircles);
-	/*PrintVerts(vertices, size);*/
+
 	//Create the Data for OpenGL to look at
 	//Generate buffers
 	glGenBuffers(1, &m_VBO);
@@ -400,7 +399,7 @@ Vertex* RenderingGeometry::GenSphereVerts(const unsigned int &sides, const unsig
 			float z = halfCircle[j].position.z * std::cos(phi) + halfCircle[j].position.y * std::sin(phi);
 
 			verts[cont].position = vec4(x, y, z, 1);
-			verts[cont].color = vec4(1,0,0,1);
+			verts[cont].color = vec4(0,0,.5,1);
 		}
 	}
 	return verts;
@@ -408,39 +407,30 @@ Vertex* RenderingGeometry::GenSphereVerts(const unsigned int &sides, const unsig
 
 unsigned int * RenderingGeometry::GenSphereIndicies(const unsigned int &verts, const unsigned int &mird)
 {
-	unsigned int count = 0;
-	unsigned int* index = new unsigned int[(verts + 1) * mird];
-	
 	//2     5   8   11  14  17
 	//1     4   7   10  13  16
 	//0     3   6   9   12  15 
 
-	for (int i = 0; i < mird; i++) {
-		unsigned int start = i * verts;
-		for (int j = 0; j < verts; j++, count+= 2) {
-			unsigned int left = (start + verts + j);
-			unsigned int right = (start + j);
+	unsigned int* index = new unsigned int[2 * (verts * (mird + 1))];	//put info in my own data structure
+	indexCount = 2 * (verts * (mird + 1));
 
-			index[count] = left;
-			index[count + 1] = right;
-		}
-		//This is something dealing with terminatting the strip
-		count += 1;
-		index[count] = 0xFFFF;
-	}
-
-	////for Points
-	//for (int i = 0; i < indexCount + 1; i++) {
-	//	index[i] = i;
-	//}
-	return index;
-}
-
-void RenderingGeometry::PrintVerts(Vertex* v, int stop) {
-	for (int i = 0; i < stop; i++)
+	for (unsigned int i = 0; i < mird; i++)	//Get the info
 	{
-		std::cout << v[i].color.x << " ";
-		std::cout << v[i].color.y << " ";
-		std::cout << v[i].color.z << std::endl;
+		unsigned int start = i * verts;
+		for (int j = 0; j < verts; j++) 
+		{
+			unsigned int botR = ((start + verts + j) % (verts * mird));
+			unsigned int botL = ((start + j) % (verts * mird));
+			indicesSTD.push_back(botL);
+			indicesSTD.push_back(botR);
+		}
+		indicesSTD.push_back(0xFFFF);
+	} 
+
+	
+
+	for (int i = 0; i < indicesSTD.size(); i++) {
+		index[i] = indicesSTD[i];
 	}
+	return index;
 }

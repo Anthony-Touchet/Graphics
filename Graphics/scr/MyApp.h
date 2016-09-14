@@ -91,6 +91,7 @@ public:
 	unsigned int m_programID;
 	GLfloat m_time;
 	mat4 m_projectionViewMatrix;
+	std::vector<unsigned int> indicesSTD;
 
 private:
 	GLFWwindow* window;

@@ -8,12 +8,7 @@ uniform float Time;
 void main() 
 { 
 	vec4 a = position;
-	//newP.x += cos(Time) + sin(Time);
-	//newP.y += sin(Time) - cos(Time);
-	//newP.z += sin(Time) / cos(Time);
-	vColour = colour; 
-	//a.x = a.x * cos(Time) - a.y * sin(Time); //* 2.5f;
-	//a.y = a.y * cos(Time) + a.x * sin(Time) * 2.35f;
+	vColour = colour;
 	gl_Position = projectionViewWorldMatrix * a; 
 
 }
