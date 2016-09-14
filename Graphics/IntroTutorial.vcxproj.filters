@@ -49,10 +49,10 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="frag.frag">
+    <None Include="frag.glsl">
       <Filter>Header Files\Resource Files</Filter>
     </None>
-    <None Include="shader.vert">
+    <None Include="shader.glsl">
       <Filter>Header Files\Resource Files</Filter>
     </None>
   </ItemGroup>

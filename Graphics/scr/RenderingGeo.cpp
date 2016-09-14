@@ -39,12 +39,12 @@ bool RenderingGeometry::Start()
 
 	//Shaders
 	const char* vsSource;						//Vertex Shader
-	std::string vs = GetShader("shader.vert");	//Get shader in the form of a string
+	std::string vs = GetShader("shader.glsl");	//Get shader in the form of a string
 	vsSource = vs.c_str();						//Makes string into a const char array.
 
 	const char* fsSource;		//Fragment Shader
 
-	std::string fs = GetShader("frag.frag");
+	std::string fs = GetShader("frag.glsl");
 	fsSource = fs.c_str();
 
 	//Compiles Shaders

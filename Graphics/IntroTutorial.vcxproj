@@ -138,8 +138,8 @@
     <ClCompile Include="scr\SolarSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="frag.frag" />
-    <None Include="shader.vert" />
+    <None Include="frag.glsl" />
+    <None Include="shader.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
