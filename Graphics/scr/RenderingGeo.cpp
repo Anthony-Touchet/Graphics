@@ -96,7 +96,7 @@ bool RenderingGeometry::Update()
 
 void RenderingGeometry::Draw()
 {
-	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	
 	//Get the info
@@ -327,9 +327,9 @@ void RenderingGeometry::MakeDisc()
 
 void RenderingGeometry::MakeShpere()
 {
-	const int radius = 3;
-	const unsigned int verts = 10;
-	const unsigned int halfCircles = 10;
+	const int radius = 5;
+	const unsigned int verts = 20;
+	const unsigned int halfCircles = 20;
 
 	const unsigned int size = (verts) * (halfCircles);
 
@@ -367,7 +367,7 @@ void RenderingGeometry::MakeShpere()
 
 	//Colors
 	glEnableVertexAttribArray(1);	//color in vertex shader
-	glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(sizeof(vec4)));
+	glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), 0);
 
 	glBindVertexArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -417,7 +417,7 @@ unsigned int * RenderingGeometry::GenSphereIndicies(const unsigned int &verts, c
 	for (unsigned int i = 0; i < mird; i++)	//Get the info
 	{
 		unsigned int start = i * verts;
-		for (int j = 0; j < verts; j++) 
+		for (int j = 0; j < verts; j++)
 		{
 			unsigned int botR = ((start + verts + j) % (verts * mird));
 			unsigned int botL = ((start + j) % (verts * mird));
@@ -425,9 +425,7 @@ unsigned int * RenderingGeometry::GenSphereIndicies(const unsigned int &verts, c
 			indicesSTD.push_back(botR);
 		}
 		indicesSTD.push_back(0xFFFF);
-	} 
-
-	
+	}
 
 	for (int i = 0; i < indicesSTD.size(); i++) {
 		index[i] = indicesSTD[i];
