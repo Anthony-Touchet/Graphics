@@ -16,7 +16,7 @@ int Add(const int a, const int b, const int c) {
 int main() {
 
 	FunctionCalling(Add, 3, 4);
-	FunctionCalling(Add, 3, 4, 7);	//Throws error
+	//FunctionCalling(Add, 3, 4, 7);	//Throws error
 
 	Add(2,3,4);	//Works still. Is Overloaded
 
