@@ -78,7 +78,7 @@ public:
 	std::string GetShader(std::string text);
 	void MakeCube();
 	void MakeDisc();
-	void MakeShpere();
+	void MakeShpere(const int radius, const unsigned int verts, const unsigned int halfCircles);
 	Vertex* GenHalfCircleVertexes(unsigned int p, const int &rad);
 	Vertex * GenSphereVerts(const unsigned int & sides, const unsigned int &mirid, Vertex *& halfCircle);
 	unsigned int* GenSphereIndicies(const unsigned int &verts, const unsigned int &mird);

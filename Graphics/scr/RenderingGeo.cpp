@@ -35,7 +35,7 @@ RenderingGeometry::RenderingGeometry()
 
 bool RenderingGeometry::Start()
 {
-	MakeShpere();	
+	MakeShpere(5, 20, 20);	
 
 	//Shaders
 	const char* vsSource;						//Vertex Shader
@@ -43,7 +43,6 @@ bool RenderingGeometry::Start()
 	vsSource = vs.c_str();						//Makes string into a const char array.
 
 	const char* fsSource;		//Fragment Shader
-
 	std::string fs = GetShader("frag.glsl");
 	fsSource = fs.c_str();
 
@@ -112,6 +111,7 @@ void RenderingGeometry::Draw()
 
 	glEnable(GL_PRIMITIVE_RESTART);
 	glPrimitiveRestartIndex(0xFFFF);
+	glPointSize(5.f);
 
 	glDrawElements(GL_TRIANGLE_STRIP, indexCount, GL_UNSIGNED_INT, 0);
 	
@@ -325,18 +325,14 @@ void RenderingGeometry::MakeDisc()
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
 
-void RenderingGeometry::MakeShpere()
+void RenderingGeometry::MakeShpere(const int radius, const unsigned int verts, const unsigned int halfCircles)
 {
-	const int radius = 5;
-	const unsigned int verts = 20;
-	const unsigned int halfCircles = 20;
-
 	const unsigned int size = (verts) * (halfCircles);
 
 	Vertex* vertices = new Vertex[size];
 	unsigned int* indices;
 
-
+	//vertices = GenHalfCircleVertexes(verts, radius);
 	Vertex* halfCircleVerts = GenHalfCircleVertexes(verts, radius);			//Generate Half Circle
 	vertices = GenSphereVerts(verts, halfCircles, halfCircleVerts);			//Generate Sphere Verticies
 
