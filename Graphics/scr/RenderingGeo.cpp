@@ -35,7 +35,9 @@ RenderingGeometry::RenderingGeometry()
 
 bool RenderingGeometry::Start()
 {
-	MakeShpere(5, 20, 20);	
+	MakeShpere(1, 20, 20);	
+	MakeCube();
+	MakePlane();
 
 	//Shaders
 	const char* vsSource;						//Vertex Shader
@@ -103,17 +105,11 @@ void RenderingGeometry::Draw()
 	
 	//Sending the Matrix here
 	unsigned int projectionViewUniform = glGetUniformLocation(m_programID, "projectionViewWorldMatrix");
-	unsigned int timeHandle = glGetUniformLocation(m_programID, "Time");
 	glUniformMatrix4fv(projectionViewUniform, 1, false, glm::value_ptr(cam.getProjectionView()));
-	glUniform1f(timeHandle, current);
 	//Draw
-	glBindVertexArray(m_VAO);
-
-	glEnable(GL_PRIMITIVE_RESTART);
-	glPrimitiveRestartIndex(0xFFFF);
-	glPointSize(5.f);
-
-	glDrawElements(GL_TRIANGLE_STRIP, indexCount, GL_UNSIGNED_INT, 0);
+	DrawPlane();
+	DrawCube();
+	DrawSphere();
 	
 	cam.update(delta, window);
 
@@ -125,9 +121,9 @@ void RenderingGeometry::Shutdown()
 {
 	//Data Now needs to be cleared out
 	glDeleteProgram(m_programID);		//Delete the Program
-	glDeleteVertexArrays(1, &m_VAO);	//Clear vertex Arraies
-	glDeleteBuffers(1, &m_VBO);			//Clear Buffers
-	glDeleteBuffers(1, &m_IBO);
+	ClearPlaneBuffers();
+	ClearCubeBuffers();
+	ClearSphereBuffers();
 	Gizmos::destroy();
 
 	glfwDestroyWindow(window);			//Terminate window
@@ -140,12 +136,12 @@ void RenderingGeometry::MakePlane()
 	Vertex vertices[4];
 	unsigned int indices[4] = { 0,1,2,3 };
 
-	indexCount = 4;
+	planeindexCount = 4;
 
-	vertices[0].position = vec4(-5, 0, -5, 1);
-	vertices[1].position = vec4(5, 0, -5, 1);
-	vertices[2].position = vec4(-5, 0, 5, 1);
-	vertices[3].position = vec4(5, 0, 5, 1);
+	vertices[0].position = vec4(-5, -2, -5, 1);
+	vertices[1].position = vec4(5, -2, -5, 1);
+	vertices[2].position = vec4(-5, -2, 5, 1);
+	vertices[3].position = vec4(5, -2, 5, 1);
 
 	vertices[0].color = vec4(1, 0, 0, 1);
 	vertices[1].color = vec4(0, 1, 0, 1);
@@ -155,21 +151,21 @@ void RenderingGeometry::MakePlane()
 	//Create the Data for OpenGL to look at
 
 	//Generate buffers
-	glGenBuffers(1, &m_VBO);
-	glGenBuffers(1, &m_IBO);
+	glGenBuffers(1, &planeVBO);
+	glGenBuffers(1, &planeIBO);
 
 	//Generate Vertex Array Object. VAO
-	glGenVertexArrays(1, &m_VAO);
+	glGenVertexArrays(1, &planeVAO);
 
 	//Changes will be put on this guy
-	glBindVertexArray(m_VAO);
+	glBindVertexArray(planeVAO);
 
 	//Set the Vertex Buffer's data
-	glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
+	glBindBuffer(GL_ARRAY_BUFFER, planeVBO);
 	glBufferData(GL_ARRAY_BUFFER, 4 * sizeof(Vertex), vertices, GL_STATIC_DRAW);
 
 	//Indeies data
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_IBO);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, planeIBO);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, 4 * sizeof(unsigned int), indices, GL_STATIC_DRAW);
 
 	//Position of Verteies
@@ -207,16 +203,16 @@ void RenderingGeometry::MakeCube()
 	Vertex vertices[8];
 	unsigned int indices[17] = { 0,1,2,3,6,7,4,5,0,1,5,3,7,6,4,2,0};		//http://www.learnopengles.com/tag/triangle-strips/
 
-	indexCount = 17;
+	cubeindexCount = 17;
 
-	vertices[0].position = vec4(-2, 0, -2, 1);
-	vertices[1].position = vec4(2, 0, -2, 1);
-	vertices[2].position = vec4(-2, 0, 2, 1);
-	vertices[3].position = vec4(2, 0, 2, 1);
-	vertices[4].position = vec4(-2, 4, -2, 1);
-	vertices[5].position = vec4(2, 4, -2, 1);
-	vertices[6].position = vec4(-2, 4, 2, 1);
-	vertices[7].position = vec4(2, 4, 2, 1);
+	vertices[0].position = vec4(-2, 2, -2, 1);
+	vertices[1].position = vec4(2, 2, -2, 1);
+	vertices[2].position = vec4(-2, 2, 2, 1);
+	vertices[3].position = vec4(2, 2, 2, 1);
+	vertices[4].position = vec4(-2, 6, -2, 1);
+	vertices[5].position = vec4(2, 6, -2, 1);
+	vertices[6].position = vec4(-2, 6, 2, 1);
+	vertices[7].position = vec4(2, 6, 2, 1);
 
 	vertices[0].color = vec4(1, 0, 0, 1);
 	vertices[1].color = vec4(0, 1, 0, 1);
@@ -230,87 +226,22 @@ void RenderingGeometry::MakeCube()
 	//Create the Data for OpenGL to look at
 
 	//Generate buffers
-	glGenBuffers(1, &m_VBO);
-	glGenBuffers(1, &m_IBO);
+	glGenBuffers(1, &cubeVBO);
+	glGenBuffers(1, &cubeIBO);
 
 	//Generate Vertex Array Object. VAO
-	glGenVertexArrays(1, &m_VAO);
+	glGenVertexArrays(1, &cubeVAO);
 
 	//Changes will be put on this guy
-	glBindVertexArray(m_VAO);
+	glBindVertexArray(cubeVAO);
 
 	//Set the Vertex Buffer's data
-	glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
+	glBindBuffer(GL_ARRAY_BUFFER, cubeVBO);
 	glBufferData(GL_ARRAY_BUFFER, 8 * sizeof(Vertex), vertices, GL_STATIC_DRAW);
 
 	//Indeies data
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_IBO);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, cubeIBO);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, 17 * sizeof(unsigned int), indices, GL_STATIC_DRAW);
-
-	//Position of Verteies
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), 0);
-
-	//Colors
-	glEnableVertexAttribArray(1);
-	glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(sizeof(vec4)));
-
-	glBindVertexArray(0);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-}
-
-void RenderingGeometry::MakeDisc()
-{
-	const int radius = 5;
-	const int verts = 25;						//Number of oustide verts
-	Vertex vertices[verts + 1];					//+1 accounts for center we will set static
-	unsigned int indices[(verts * 3) + 3];		//off set by 3. 
-	indexCount = (verts * 3) + 3;				//Set index count
-
-	//Generate verts
-	vertices[0].position = vec4(0, 0, 0, 1);	//Static set center
-	vertices[0].color = vec4(1,1,0,1);
-	
-	for (int i = 1; i <= verts; i++) {	//Calculate all outside verticies
-		vertices[i].position = vec4 (radius * std::cos(i * ((M_PI * 2)/ verts)), 0 , radius * std::sin(i * ((M_PI * 2) / verts)), 1);
-		vertices[i].color = vec4(1, 1, 0, 1);
-	}
-
-	int num = 1;	//Tells what vert will be filled into the slot
-	//Gen Indicies
-	for (int i = 0; i < indexCount; i+=3, num++) {	//Increace by three for three vertexes for each triangle. Set three indicies at once per loop
-		if (num > verts) {	
-			indices[i] = 0;
-			indices[i + 1] = num - 1;
-			indices[i + 2] = 1;
-		}
-
-		else {
-			indices[i] = 0;
-			indices[i + 1] = num;
-			indices[i + 2] = num + 1;
-		}
-	}
-
-	//Create the Data for OpenGL to look at
-	//Generate buffers
-	glGenBuffers(1, &m_VBO);
-	glGenBuffers(1, &m_IBO);
-
-	//Generate Vertex Array Object. VAO
-	glGenVertexArrays(1, &m_VAO);
-
-	//Changes will be put on this guy
-	glBindVertexArray(m_VAO);
-
-	//Set the Vertex Buffer's data
-	glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
-	glBufferData(GL_ARRAY_BUFFER, (verts + 1) * sizeof(Vertex), vertices, GL_STATIC_DRAW);
-
-	//Indeies data
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_IBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, (indexCount * sizeof(unsigned int)), indices, GL_STATIC_DRAW);
 
 	//Position of Verteies
 	glEnableVertexAttribArray(0);
@@ -340,22 +271,22 @@ void RenderingGeometry::MakeShpere(const int radius, const unsigned int verts, c
 
 	//Create the Data for OpenGL to look at
 	//Generate buffers
-	glGenBuffers(1, &m_VBO);
-	glGenBuffers(1, &m_IBO);
+	glGenBuffers(1, &sphereVBO);
+	glGenBuffers(1, &sphereIBO);
 
 	//Generate Vertex Array Object. VAO
-	glGenVertexArrays(1, &m_VAO);
+	glGenVertexArrays(1, &sphereVAO);
 
 	//Changes will be put on this guy
-	glBindVertexArray(m_VAO);
+	glBindVertexArray(sphereVAO);
 
 	//Set the Vertex Buffer's data
-	glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
+	glBindBuffer(GL_ARRAY_BUFFER, sphereVBO);
 	glBufferData(GL_ARRAY_BUFFER, size * sizeof(Vertex), vertices, GL_STATIC_DRAW);
 
 	//Indeies data
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_IBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, (indexCount * sizeof(unsigned int)), indices, GL_STATIC_DRAW);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, sphereIBO);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, (sphereindexCount * sizeof(unsigned int)), indices, GL_STATIC_DRAW);
 
 	//Position of Verteies
 	glEnableVertexAttribArray(0);	//pos of vertex in shader
@@ -408,7 +339,7 @@ unsigned int * RenderingGeometry::GenSphereIndicies(const unsigned int &verts, c
 	//0     3   6   9   12  15 
 
 	unsigned int* index = new unsigned int[2 * (verts * (mird + 1))];	//put info in my own data structure
-	indexCount = 2 * (verts * (mird + 1));
+	sphereindexCount = 2 * (verts * (mird + 1));
 
 	for (unsigned int i = 0; i < mird; i++)	//Get the info
 	{
@@ -427,4 +358,46 @@ unsigned int * RenderingGeometry::GenSphereIndicies(const unsigned int &verts, c
 		index[i] = indicesSTD[i];
 	}
 	return index;
+}
+
+void RenderingGeometry::ClearPlaneBuffers()
+{
+	glDeleteVertexArrays(1, &planeVAO);	//Clear vertex Arraies
+	glDeleteBuffers(1, &planeVBO);			//Clear Buffers
+	glDeleteBuffers(1, &planeIBO);
+}
+
+void RenderingGeometry::ClearCubeBuffers()
+{
+	glDeleteVertexArrays(1, &cubeVAO);	//Clear vertex Arraies
+	glDeleteBuffers(1, &cubeVBO);			//Clear Buffers
+	glDeleteBuffers(1, &cubeIBO);
+}
+
+void RenderingGeometry::ClearSphereBuffers()
+{
+	glDeleteVertexArrays(1, &sphereVAO);	//Clear vertex Arraies
+	glDeleteBuffers(1, &sphereVBO);			//Clear Buffers
+	glDeleteBuffers(1, &sphereIBO);
+}
+
+void RenderingGeometry::DrawPlane()
+{
+	glBindVertexArray(planeVAO);
+	glDrawElements(GL_TRIANGLE_STRIP, planeindexCount, GL_UNSIGNED_INT, 0);
+}
+
+void RenderingGeometry::DrawCube()
+{
+	glBindVertexArray(cubeVAO);
+	glDrawElements(GL_TRIANGLE_STRIP, cubeindexCount, GL_UNSIGNED_INT, 0);
+}
+
+void RenderingGeometry::DrawSphere()
+{
+	glEnable(GL_PRIMITIVE_RESTART);
+	glPrimitiveRestartIndex(0xFFFF);
+
+	glBindVertexArray(sphereVAO);
+	glDrawElements(GL_TRIANGLE_STRIP, sphereindexCount, GL_UNSIGNED_INT, 0);
 }

@@ -77,15 +77,29 @@ public:
 	void MakePlane();
 	std::string GetShader(std::string text);
 	void MakeCube();
-	void MakeDisc();
 	void MakeShpere(const int radius, const unsigned int verts, const unsigned int halfCircles);
 	Vertex* GenHalfCircleVertexes(unsigned int p, const int &rad);
 	Vertex * GenSphereVerts(const unsigned int & sides, const unsigned int &mirid, Vertex *& halfCircle);
 	unsigned int* GenSphereIndicies(const unsigned int &verts, const unsigned int &mird);
 
-	unsigned int m_VAO;
-	unsigned int m_VBO;
-	unsigned int m_IBO;
+	void ClearPlaneBuffers();
+	void ClearCubeBuffers();
+	void ClearSphereBuffers();
+
+	void DrawPlane();
+	void DrawCube();
+	void DrawSphere();
+
+	unsigned int planeVAO;
+	unsigned int planeVBO;
+	unsigned int planeIBO;
+	unsigned int cubeVAO;
+	unsigned int cubeVBO;
+	unsigned int cubeIBO;
+	unsigned int sphereVAO;
+	unsigned int sphereVBO;
+	unsigned int sphereIBO;
+
 	unsigned int m_programID;
 	GLfloat m_time;
 	mat4 m_projectionViewMatrix;
@@ -95,7 +109,9 @@ private:
 	GLFWwindow* window;
 	FlyCamera cam;
 
-	int indexCount;
+	int planeindexCount;
+	int cubeindexCount;
+	int sphereindexCount;
 
 	float previous = 0;
 	float current;
