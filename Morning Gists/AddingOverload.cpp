@@ -13,16 +13,16 @@ int Add(const int a, const int b, const int c) {
 	return a + b + c;
 }
 
-int main() {
-
-	FunctionCalling(Add, 3, 4);
-	//FunctionCalling(Add, 3, 4, 7);	//Throws error
-
-	Add(2,3,4);	//Works still. Is Overloaded
-
-	system("pause");
-	return 0;
-}
+//int main() {
+//
+//	FunctionCalling(Add, 3, 4);
+//	//FunctionCalling(Add, 3, 4, 7);	//Throws error
+//
+//	Add(2,3,4);	//Works still. Is Overloaded
+//
+//	system("pause");
+//	return 0;
+//}
 
 //FunctionCalling looks for a very spisific signiture. FunctionCalling is looking for a function that returns an int and has two int parameters.
 //Even if Add had multiple Definitions, Fuction calling is looking for one very spesific signiture.
