@@ -47,12 +47,21 @@
     <ClCompile Include="..\dep\gl_core_4_4.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="scr\Texturing.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="frag.glsl">
       <Filter>Header Files\Resource Files</Filter>
     </None>
     <None Include="shader.glsl">
+      <Filter>Header Files\Resource Files</Filter>
+    </None>
+    <None Include="vsTexturing.glsl">
+      <Filter>Header Files\Resource Files</Filter>
+    </None>
+    <None Include="fsTexturing.glsl">
       <Filter>Header Files\Resource Files</Filter>
     </None>
   </ItemGroup>

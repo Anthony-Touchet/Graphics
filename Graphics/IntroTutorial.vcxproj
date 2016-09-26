@@ -71,7 +71,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <IncludePath>$(SolutionDir)dep;$(SolutionDir)dep\glm;$(SolutionDir)dep\glfw\include;$(SolutionDir)Graphics\scr;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)dep\glm;$(SolutionDir)dep\glfw\lib;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(SolutionDir)dep\glm;$(SolutionDir)dep;$(SolutionDir)dep\glfw\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <IncludePath>$(SolutionDir)dep\glm;$(SolutionDir)dep\glfw\include;$(SolutionDir)dep;$(IncludePath)</IncludePath>
@@ -134,12 +134,15 @@
     <ClCompile Include="..\dep\gl_core_4_4.c" />
     <ClCompile Include="scr\Camera.cpp" />
     <ClCompile Include="scr\main.cpp" />
+    <ClCompile Include="scr\Texturing.cpp" />
     <ClCompile Include="scr\RenderingGeo.cpp" />
     <ClCompile Include="scr\SolarSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="frag.glsl" />
+    <None Include="fsTexturing.glsl" />
     <None Include="shader.glsl" />
+    <None Include="vsTexturing.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
