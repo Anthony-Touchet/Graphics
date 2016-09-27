@@ -1,8 +1,8 @@
 #include "MyApp.h"
-
+#define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
 
-Texturing::Texturing() {
+AdvTexturing::AdvTexturing() {
 	glfwInit();
 
 	window = glfwCreateWindow(1080, 720, "Window", nullptr, nullptr);
@@ -30,7 +30,7 @@ Texturing::Texturing() {
 
 }
 
-std::string Texturing::GetShader(std::string text)
+std::string AdvTexturing::GetShader(std::string text)
 {
 	std::string line;
 	std::string shader;
@@ -46,7 +46,7 @@ std::string Texturing::GetShader(std::string text)
 	return shader;
 }
 
-bool Texturing::Update()
+bool AdvTexturing::Update()
 {
 	//Calculate delta time
 	current = (float)glfwGetTime();
@@ -61,41 +61,36 @@ bool Texturing::Update()
 	return false;
 }
 
-bool Texturing::Start()
+bool AdvTexturing::Start()
 {
-	MakePlane();
-	
+	MakeData();
+
 	int imageWidth = 0, imageHeight = 0, imageFormat = 0;
-
-	unsigned char* data = stbi_load("textures/bricks.png", &imageWidth, &imageHeight, &imageFormat, STBI_default);
-
+	unsigned char* data;
+	// load diffuse map
+	data = stbi_load("textures/rock_diffuse.tga", &imageWidth, &imageHeight, &imageFormat, STBI_default);
 	glGenTextures(1, &m_texture);
 	glBindTexture(GL_TEXTURE_2D, m_texture);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, imageWidth, imageHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
-
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, imageWidth, imageHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-
 	stbi_image_free(data);
 
-	unsigned char* data2 = stbi_load("textures/star.png", &imageWidth, &imageHeight, &imageFormat, STBI_default);
-
-	glGenTextures(1, &m_texture2);
-	glBindTexture(GL_TEXTURE_2D, m_texture2);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, imageWidth, imageHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, data2);
-
+	// load normal map
+	data = stbi_load("textures/rock_normal.tga", &imageWidth, &imageHeight, &imageFormat, STBI_default);
+	glGenTextures(1, &m_normal);
+	glBindTexture(GL_TEXTURE_2D, m_normal);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, imageWidth, imageHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	stbi_image_free(data);
 
-	stbi_image_free(data2);
-
-	//Shaders
 	const char* vsSource;
-	std::string vs = GetShader("vsTexturing.glsl");
+	std::string vs = GetShader("vsAdvText.glsl");
 	vsSource = vs.c_str();
 
 	const char* fsSource;
-	std::string fs = GetShader("fsTexturing.glsl");
+	std::string fs = GetShader("fsAdvText.glsl");
 	fsSource = fs.c_str();
 
 	//Compiles Shaders
@@ -118,33 +113,33 @@ bool Texturing::Start()
 	return true;
 }
 
-void Texturing::Draw()
+void AdvTexturing::Draw()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	// use our texture program
 	glUseProgram(m_program);
-	
+
 	// bind the camera
 	int loc = glGetUniformLocation(m_program, "ProjectionView");
 	glUniformMatrix4fv(loc, 1, GL_FALSE, &(cam.getProjectionView()[0][0]));
-	
-	int loc2 = glGetUniformLocation(m_program, "ProjectionView");
-	glUniformMatrix4fv(loc2, 1, GL_FALSE, &(cam.getProjectionView()[0][0]));
 
-	// set texture slot
+	// set texture slots
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, m_texture);
-
 	glActiveTexture(GL_TEXTURE1);
-	glBindTexture(GL_TEXTURE_2D, m_texture2);
-	
+	glBindTexture(GL_TEXTURE_2D, m_normal);
+
 	// tell the shader where it is
 	loc = glGetUniformLocation(m_program, "diffuse");
 	glUniform1i(loc, 0);
-	
-	loc2 = glGetUniformLocation(m_program, "white");
-	glUniform1i(loc2, 1);
+	loc = glGetUniformLocation(m_program, "normal");
+	glUniform1i(loc, 1);
+
+	// bind the light
+	vec3 lightAD(sin(glfwGetTime()), 1, cos(glfwGetTime()));
+	loc = glGetUniformLocation(m_program, "LightDir");
+	glUniform3f(loc, lightAD.x, lightAD.y, lightAD.z);
 
 	// draw
 	glBindVertexArray(m_vao);
@@ -156,7 +151,7 @@ void Texturing::Draw()
 	glfwPollEvents();
 }
 
-void Texturing::Shutdown()
+void AdvTexturing::Shutdown()
 {
 	//Data Now needs to be cleared out
 	glDeleteProgram(m_program);		//Delete the Program
@@ -168,13 +163,12 @@ void Texturing::Shutdown()
 	glfwTerminate();
 }
 
-void Texturing::MakePlane()
-{
-	float vertexData[] = {
-		-5, 0, 5, 1, 0, 1,
-		5, 0, 5, 1, 1, 1,
-		5, 0, -5, 1, 1, 0,
-		-5, 0, -5, 1, 0, 0,
+void AdvTexturing::MakeData() {
+	VertexM vertexData[] = {
+		{ -5, 0, 5, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0, 1 },
+		{ 5, 0, 5, 1, 0, 1, 0, 0, 1, 0, 0, 0, 1, 1 },
+		{ 5, 0, -5, 1, 0, 1, 0, 0, 1, 0, 0, 0, 1, 0 },
+		{ -5, 0, -5, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0 },
 	};
 	unsigned int indexData[] = {
 		0, 1, 2,
@@ -182,21 +176,26 @@ void Texturing::MakePlane()
 	};
 	glGenVertexArrays(1, &m_vao);
 	glBindVertexArray(m_vao);
-
 	glGenBuffers(1, &m_vbo);
 	glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 6 * 4, vertexData, GL_STATIC_DRAW);
-	
+	glBufferData(GL_ARRAY_BUFFER, sizeof(VertexM) * 4,
+		vertexData, GL_STATIC_DRAW);
 	glGenBuffers(1, &m_ibo);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ibo);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * 6, indexData, GL_STATIC_DRAW);
-	
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * 6,
+		indexData, GL_STATIC_DRAW);
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE,
-		sizeof(float) * 6, 0);
+		sizeof(VertexM), 0);
 	glEnableVertexAttribArray(1);
 	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE,
-		sizeof(float) * 6, ((char*)0) + 16);
+		sizeof(VertexM), ((char*)0) + 48);
+	glEnableVertexAttribArray(2);
+	glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE,
+		sizeof(VertexM), ((char*)0) + 16);
+	glEnableVertexAttribArray(3);
+	glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE,
+		sizeof(VertexM), ((char*)0) + 32);
 	glBindVertexArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);

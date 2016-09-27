@@ -132,6 +132,7 @@
   <ItemGroup>
     <ClCompile Include="..\dep\Gizmos.cpp" />
     <ClCompile Include="..\dep\gl_core_4_4.c" />
+    <ClCompile Include="scr\AdvancedTexturing.cpp" />
     <ClCompile Include="scr\Camera.cpp" />
     <ClCompile Include="scr\main.cpp" />
     <ClCompile Include="scr\Texturing.cpp" />
@@ -140,8 +141,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="frag.glsl" />
+    <None Include="fsAdvText.glsl" />
     <None Include="fsTexturing.glsl" />
     <None Include="shader.glsl" />
+    <None Include="vsAdvText.glsl" />
     <None Include="vsTexturing.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

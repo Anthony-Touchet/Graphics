@@ -14,7 +14,6 @@
 #include "Camera.h"
 #include <vector>
 
-
 using glm::vec3;
 using glm::vec4;
 using glm::mat4;
@@ -60,10 +59,17 @@ private:
 };
 
 struct Vertex
-	{
-		vec4 position;
-		vec4 color;
-	};
+{
+	vec4 position;
+	vec4 color;
+};
+
+struct VertexM {
+	float x, y, z, w;
+	float nx, ny, nz, nw;
+	float tx, ty, tz, tw;
+	float s, t;
+};
 
 class RenderingGeometry : public Application {
 
@@ -131,6 +137,7 @@ public:
 	Texturing(); 
 	std::string GetShader(std::string text);
 	void MakePlane();
+	void MakeData();
 
 private:
 	GLFWwindow* window;
@@ -148,5 +155,35 @@ private:
 	unsigned int m_vao;
 	unsigned int m_vbo;
 	unsigned int m_ibo;
+
+	unsigned int m_texture3, m_normal;
 };
 
+class AdvTexturing : public Application {
+public:
+	// Inherited via Application
+	virtual bool Update() override;
+	virtual bool Start() override;
+	virtual void Draw() override;
+	virtual void Shutdown() override;
+
+	AdvTexturing();
+	std::string GetShader(std::string text);
+	void MakeData();
+
+private:
+	GLFWwindow* window;
+	FlyCamera cam;
+
+	float previous = 0;
+	float current;
+	float delta;
+
+	unsigned int m_program;
+	unsigned int m_texture, m_normal;
+
+	int planeindexCount;
+	unsigned int m_vao;
+	unsigned int m_vbo;
+	unsigned int m_ibo;
+};

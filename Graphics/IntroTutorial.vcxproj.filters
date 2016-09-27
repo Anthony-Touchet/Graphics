@@ -50,6 +50,9 @@
     <ClCompile Include="scr\Texturing.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="scr\AdvancedTexturing.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="frag.glsl">
@@ -62,6 +65,12 @@
       <Filter>Header Files\Resource Files</Filter>
     </None>
     <None Include="fsTexturing.glsl">
+      <Filter>Header Files\Resource Files</Filter>
+    </None>
+    <None Include="vsAdvText.glsl">
+      <Filter>Header Files\Resource Files</Filter>
+    </None>
+    <None Include="fsAdvText.glsl">
       <Filter>Header Files\Resource Files</Filter>
     </None>
   </ItemGroup>
