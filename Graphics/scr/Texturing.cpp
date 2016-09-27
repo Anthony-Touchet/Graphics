@@ -25,7 +25,7 @@ Texturing::Texturing() {
 	cam.setSpeed(10);
 
 	Gizmos::create();
-
+	glEnable(GL_BLEND);
 	glClearColor(0.25f, 0.25f, 0.25f, 1);
 	glEnable(GL_DEPTH_TEST);	//Enables the Depth Buffer
 
@@ -79,7 +79,7 @@ bool Texturing::Start()
 
 	stbi_image_free(data);
 
-	unsigned char* data2 = stbi_load("textures/wolf.png", &imageWidth, &imageHeight, &imageFormat, STBI_default);
+	unsigned char* data2 = stbi_load("textures/star.png", &imageWidth, &imageHeight, &imageFormat, STBI_default);
 
 	glGenTextures(1, &m_texture2);
 	glBindTexture(GL_TEXTURE_2D, m_texture2);

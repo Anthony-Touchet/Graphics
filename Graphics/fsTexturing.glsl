@@ -10,8 +10,8 @@ void main() {
 	vec4 a = texture(diffuse, vTexCoord);
 	vec4 b = texture(white, vTexCoord);
 
-	//vec3 newA = b.a * b.rgb;
-	//vec3 newB = a.rgb * -(b.a);
+	vec3 newA = b.a * b.rgb;
+	vec3 newB = a.rgb * -(b.a);
 
-	FragColor = a * b;
+	FragColor = vec4(mix(newA, newB, .5f), 1);
 }
