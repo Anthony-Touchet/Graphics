@@ -70,12 +70,16 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>$(SolutionDir)dep;$(SolutionDir)dep\glm;$(SolutionDir)dep\glfw\include;$(SolutionDir)Graphics\scr;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)dep\glm;$(SolutionDir)dep;$(SolutionDir)dep\glfw\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)dep;$(SolutionDir)dep\glm;$(SolutionDir)dep\glfw\include;$(SolutionDir)Graphics\scr;$(SolutionDir)dep\Header;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)dep\FBX\lib;$(SolutionDir)dep\glm;$(SolutionDir)dep;$(SolutionDir)dep\glfw\lib;$(SolutionDir)dep\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <IncludePath>$(SolutionDir)dep\glm;$(SolutionDir)dep\glfw\include;$(SolutionDir)dep;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)dep\glfw\lib;$(SolutionDir)dep\glm;$(SolutionDir)dep;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <IncludePath>$(SolutionDir)dep;$(SolutionDir)dep\glm;$(SolutionDir)dep\glfw\include;$(SolutionDir)Graphics\scr;$(SolutionDir)dep\Header;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)dep\glm;$(SolutionDir)dep;$(SolutionDir)dep\glfw\lib;$(SolutionDir)dep\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -84,7 +88,7 @@
       <SDLCheck>true</SDLCheck>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>glfw3.lib;openGL32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glfw3.lib;openGL32.lib;FBXLoader_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -108,6 +112,7 @@
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>glfw3.lib;openGL32.lib;FBXLoader.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">

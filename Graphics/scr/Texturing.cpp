@@ -65,6 +65,10 @@ bool Texturing::Start()
 {
 	MakePlane();
 	
+	m_fbx = new FBXFile();
+	m_fbx->load("models/soulspear/soulspear.fbx");
+	createOpenGLBuffers(m_fbx);
+
 	int imageWidth = 0, imageHeight = 0, imageFormat = 0;
 
 	unsigned char* data = stbi_load("textures/bricks.png", &imageWidth, &imageHeight, &imageFormat, STBI_default);
@@ -146,6 +150,15 @@ void Texturing::Draw()
 	loc2 = glGetUniformLocation(m_program, "white");
 	glUniform1i(loc2, 1);
 
+	// bind our vertex array object and draw the mesh
+	for (unsigned int i = 0; i < m_fbx->getMeshCount(); ++i) {
+		FBXMeshNode* mesh = m_fbx->getMeshByIndex(i);
+		unsigned int* glData = (unsigned int*)mesh->m_userData;
+		glBindVertexArray(glData[0]);
+		glDrawElements(GL_TRIANGLES,
+			(unsigned int)mesh->m_indices.size(), GL_UNSIGNED_INT, 0);
+	}
+
 	// draw
 	glBindVertexArray(m_vao);
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
@@ -200,4 +213,51 @@ void Texturing::MakePlane()
 	glBindVertexArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+}
+
+void Texturing::createOpenGLBuffers(FBXFile * fbx)
+{
+	// create the GL VAO/VBO/IBO data for each mesh
+	for (unsigned int i = 0; i < fbx->getMeshCount(); ++i)
+	{
+		FBXMeshNode* mesh = fbx->getMeshByIndex(i);
+		// storage for the opengl data in 3 unsigned int
+		unsigned int* glData = new unsigned int[3];		
+		glGenVertexArrays(1, &glData[0]);
+		glBindVertexArray(glData[0]);
+		glGenBuffers(1, &glData[1]);
+		glGenBuffers(1, &glData[2]);
+		glBindBuffer(GL_ARRAY_BUFFER, glData[1]);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, glData[2]);
+		glBufferData(GL_ARRAY_BUFFER,
+			mesh->m_vertices.size() * sizeof(FBXVertex),
+			mesh->m_vertices.data(), GL_STATIC_DRAW);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER,
+			mesh->m_indices.size() * sizeof(unsigned int),
+			mesh->m_indices.data(), GL_STATIC_DRAW);
+		glEnableVertexAttribArray(0); // position
+		glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE,
+			sizeof(FBXVertex), 0);
+		glEnableVertexAttribArray(1); // normal
+		glVertexAttribPointer(1, 4, GL_FLOAT, GL_TRUE,
+			sizeof(FBXVertex),
+			((char*)0) + FBXVertex::NormalOffset);
+		glBindVertexArray(0);
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+		mesh->m_userData = glData;
+	}
+}
+
+void Texturing::cleanupOpenGLBuffers(FBXFile * fbx)
+{
+	// clean up the vertex data attached to each mesh
+	for (unsigned int i = 0; i < fbx->getMeshCount(); ++i) {
+		FBXMeshNode* mesh = fbx->getMeshByIndex(i);
+		unsigned int* glData = (unsigned int*)mesh->m_userData;
+		glDeleteVertexArrays(1, &glData[0]);
+		glDeleteBuffers(1, &glData[1]);
+		glDeleteBuffers(1, &glData[2]);
+		delete[] glData;
+	}
 }
