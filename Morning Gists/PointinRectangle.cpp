@@ -39,67 +39,67 @@ int IsPointWithinDistOfRectangle(const Rectangle& rect, const Point& point, floa
 	}
 }
 
-int main() {
-	Point p;
-	p.x = 0.f;
-	p.y = 0.f;
-
-	Rectangle a;
-	a.bottomLeft = p;
-	a.height = 5.f;
-	a.width = 5.f;
-
-	Point test;
-	test.x = 1.f;
-	test.y = 1.f;
-
-	float dist = 5.f;
-
-	/*
-	a.x = 0;
-	a.y = 0;
-	a.width = 5;
-	a.height = 5;
-
-	test.x = 1;
-	test.y = 1;
-
-	dist = 5;
-	*/
-	assert(IsPointWithinDistOfRectangle(a, test, dist) == 1);	//Testing to see if the function returns in rectangle. PASS
-
-	test.x = 10.f;
-	test.y = 10.f;
-
-	/*
-	a.x = 0;
-	a.y = 0;
-	a.width = 5;
-	a.height = 5;
-
-	test.x = 10;
-	test.y = 10;
-
-	dist = 5;
-	*/
-
-	assert(IsPointWithinDistOfRectangle(a, test, dist) == 2);	//Testing to see if point is within distance of rectangle. PASS
-	
-	/*
-	a.x = 0;
-	a.y = 0;
-	a.width = 5;
-	a.height = 5;
-
-	test.x = 10;
-	test.y = 10;
-
-	dist = 1;
-	*/
-
-	dist = 1.f;
-	assert(IsPointWithinDistOfRectangle(a, test, dist) == 0);	//Testing for failure. PASS
-
-	system("pause");
-	return 0;
-}
+//int main() {
+//	Point p;
+//	p.x = 0.f;
+//	p.y = 0.f;
+//
+//	Rectangle a;
+//	a.bottomLeft = p;
+//	a.height = 5.f;
+//	a.width = 5.f;
+//
+//	Point test;
+//	test.x = 1.f;
+//	test.y = 1.f;
+//
+//	float dist = 5.f;
+//
+//	/*
+//	a.x = 0;
+//	a.y = 0;
+//	a.width = 5;
+//	a.height = 5;
+//
+//	test.x = 1;
+//	test.y = 1;
+//
+//	dist = 5;
+//	*/
+//	assert(IsPointWithinDistOfRectangle(a, test, dist) == 1);	//Testing to see if the function returns in rectangle. PASS
+//
+//	test.x = 10.f;
+//	test.y = 10.f;
+//
+//	/*
+//	a.x = 0;
+//	a.y = 0;
+//	a.width = 5;
+//	a.height = 5;
+//
+//	test.x = 10;
+//	test.y = 10;
+//
+//	dist = 5;
+//	*/
+//
+//	assert(IsPointWithinDistOfRectangle(a, test, dist) == 2);	//Testing to see if point is within distance of rectangle. PASS
+//	
+//	/*
+//	a.x = 0;
+//	a.y = 0;
+//	a.width = 5;
+//	a.height = 5;
+//
+//	test.x = 10;
+//	test.y = 10;
+//
+//	dist = 1;
+//	*/
+//
+//	dist = 1.f;
+//	assert(IsPointWithinDistOfRectangle(a, test, dist) == 0);	//Testing for failure. PASS
+//
+//	system("pause");
+//	return 0;
+//}

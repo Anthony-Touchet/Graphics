@@ -120,6 +120,7 @@
     <ClCompile Include="Random.cpp" />
     <ClCompile Include="Translate-Rotate-Scale.cpp" />
     <ClCompile Include="Translate.cpp" />
+    <ClCompile Include="WeaponDPS.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
