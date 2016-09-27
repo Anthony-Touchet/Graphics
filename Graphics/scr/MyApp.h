@@ -14,6 +14,8 @@
 #include "Camera.h"
 #include <vector>
 
+#include <FBX\Header\FBXFile.h>
+
 using glm::vec3;
 using glm::vec4;
 using glm::mat4;
@@ -137,11 +139,13 @@ public:
 	Texturing(); 
 	std::string GetShader(std::string text);
 	void MakePlane();
-	void MakeData();
+	void createOpenGLBuffers(FBXFile* fbx);
+	void cleanupOpenGLBuffers(FBXFile* fbx);
 
 private:
 	GLFWwindow* window;
 	FlyCamera cam;
+	FBXFile* m_fbx;
 
 	float previous = 0;
 	float current;
@@ -155,8 +159,6 @@ private:
 	unsigned int m_vao;
 	unsigned int m_vbo;
 	unsigned int m_ibo;
-
-	unsigned int m_texture3, m_normal;
 };
 
 class AdvTexturing : public Application {
