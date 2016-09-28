@@ -142,40 +142,12 @@ public:
 	void createOpenGLBuffers(FBXFile* fbx);
 	void cleanupOpenGLBuffers(FBXFile* fbx);
 
-private:
-	GLFWwindow* window;
-	FlyCamera cam;
-	FBXFile* m_fbx;
-
-	float previous = 0;
-	float current;
-	float delta;
-
-	unsigned int m_program;
-	unsigned int m_texture;
-	unsigned int m_texture2;
-
-	int planeindexCount;
-	unsigned int m_vao;
-	unsigned int m_vbo;
-	unsigned int m_ibo;
-};
-
-class AdvTexturing : public Application {
-public:
-	// Inherited via Application
-	virtual bool Update() override;
-	virtual bool Start() override;
-	virtual void Draw() override;
-	virtual void Shutdown() override;
-
-	AdvTexturing();
-	std::string GetShader(std::string text);
 	void MakeData();
 
 private:
 	GLFWwindow* window;
 	FlyCamera cam;
+	FBXFile* m_fbx;
 
 	float previous = 0;
 	float current;

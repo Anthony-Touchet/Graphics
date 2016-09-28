@@ -79,7 +79,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <IncludePath>$(SolutionDir)dep;$(SolutionDir)dep\glm;$(SolutionDir)dep\glfw\include;$(SolutionDir)Graphics\scr;$(SolutionDir)dep\Header;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)dep\glm;$(SolutionDir)dep;$(SolutionDir)dep\glfw\lib;$(SolutionDir)dep\lib;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(SolutionDir)dep\glm;$(SolutionDir)dep;$(SolutionDir)dep\glfw\lib;$(SolutionDir)dep\lib;$(SolutionDir)dep\FBX\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -137,7 +137,6 @@
   <ItemGroup>
     <ClCompile Include="..\dep\Gizmos.cpp" />
     <ClCompile Include="..\dep\gl_core_4_4.c" />
-    <ClCompile Include="scr\AdvancedTexturing.cpp" />
     <ClCompile Include="scr\Camera.cpp" />
     <ClCompile Include="scr\main.cpp" />
     <ClCompile Include="scr\Texturing.cpp" />

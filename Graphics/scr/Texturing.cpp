@@ -23,7 +23,6 @@ Texturing::Texturing() {
 	cam.setPerspective(glm::pi<float>() * 0.25f, 16 / 9.f, 0.1f, 1000.f);
 	cam.setSpeed(10);
 
-	Gizmos::create();
 	glEnable(GL_BLEND);
 	glClearColor(0.25f, 0.25f, 0.25f, 1);
 	glEnable(GL_DEPTH_TEST);	//Enables the Depth Buffer
@@ -64,42 +63,41 @@ bool Texturing::Update()
 bool Texturing::Start()
 {
 	MakePlane();
+
+	MakeData();
 	
 	m_fbx = new FBXFile();
-	m_fbx->load("models/soulspear/soulspear.fbx");
+	m_fbx->load("models/dragon.obj");
 	createOpenGLBuffers(m_fbx);
 
 	int imageWidth = 0, imageHeight = 0, imageFormat = 0;
+	unsigned char* data;
 
-	unsigned char* data = stbi_load("textures/Reform.png", &imageWidth, &imageHeight, &imageFormat, STBI_default);
-
+	// load diffuse map
+	data = stbi_load("textures/rock_diffuse.tga", &imageWidth, &imageHeight, &imageFormat, STBI_default);
 	glGenTextures(1, &m_texture);
 	glBindTexture(GL_TEXTURE_2D, m_texture);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, imageWidth, imageHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
-
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	stbi_image_free(data);
 
-	unsigned char* data2 = stbi_load("textures/star.png", &imageWidth, &imageHeight, &imageFormat, STBI_default);
-
-	glGenTextures(1, &m_texture2);
-	glBindTexture(GL_TEXTURE_2D, m_texture2);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, imageWidth, imageHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, data2);
-
+	// load normal map
+	data = stbi_load("textures/rock_normal.tga", &imageWidth, &imageHeight, &imageFormat, STBI_default);
+	glGenTextures(1, &m_normal);
+	glBindTexture(GL_TEXTURE_2D, m_normal);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, imageWidth, imageHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	stbi_image_free(data);
 
-	stbi_image_free(data2);
-
-	//Shaders
 	const char* vsSource;
-	std::string vs = GetShader("vsTexturing.glsl");
+	std::string vs = GetShader("vsAdvText.glsl");
 	vsSource = vs.c_str();
 
 	const char* fsSource;
-	std::string fs = GetShader("fsTexturing.glsl");
+	std::string fs = GetShader("fsAdvText.glsl");
 	fsSource = fs.c_str();
 
 	//Compiles Shaders
@@ -132,23 +130,27 @@ void Texturing::Draw()
 	// bind the camera
 	int loc = glGetUniformLocation(m_program, "ProjectionView");
 	glUniformMatrix4fv(loc, 1, GL_FALSE, &(cam.getProjectionView()[0][0]));
-	
-	int loc2 = glGetUniformLocation(m_program, "ProjectionView");
-	glUniformMatrix4fv(loc2, 1, GL_FALSE, &(cam.getProjectionView()[0][0]));
 
-	// set texture slot
+	// set texture slots
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, m_texture);
-
 	glActiveTexture(GL_TEXTURE1);
-	glBindTexture(GL_TEXTURE_2D, m_texture2);
-	
+	glBindTexture(GL_TEXTURE_2D, m_normal);
+
 	// tell the shader where it is
 	loc = glGetUniformLocation(m_program, "diffuse");
 	glUniform1i(loc, 0);
-	
-	loc2 = glGetUniformLocation(m_program, "white");
-	glUniform1i(loc2, 1);
+	loc = glGetUniformLocation(m_program, "normal");
+	glUniform1i(loc, 1);
+
+	// bind the light
+	vec3 lightAD(sin(glfwGetTime()), 1, cos(glfwGetTime()));
+	loc = glGetUniformLocation(m_program, "LightDir");
+	glUniform3f(loc, lightAD.x, lightAD.y, lightAD.z);
+
+	// draw
+	glBindVertexArray(m_vao);
+	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 
 	// bind our vertex array object and draw the mesh
 	for (unsigned int i = 0; i < m_fbx->getMeshCount(); ++i) {
@@ -262,4 +264,42 @@ void Texturing::cleanupOpenGLBuffers(FBXFile * fbx)
 		glDeleteBuffers(1, &glData[2]);
 		delete[] glData;
 	}
+}
+
+void Texturing::MakeData() {
+	VertexM vertexData[] = {
+		{ -5, -1, 5, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0, 1 },
+		{ 5, -1, 5, 1, 0, 1, 0, 0, 1, 0, 0, 0, 1, 1 },
+		{ 5, -1, -5, 1, 0, 1, 0, 0, 1, 0, 0, 0, 1, 0 },
+		{ -5, -1, -5, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0 },
+	};
+	unsigned int indexData[] = {
+		0, 1, 2,
+		0, 2, 3,
+	};
+	glGenVertexArrays(1, &m_vao);
+	glBindVertexArray(m_vao);
+	glGenBuffers(1, &m_vbo);
+	glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(VertexM) * 4,
+		vertexData, GL_STATIC_DRAW);
+	glGenBuffers(1, &m_ibo);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ibo);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * 6,
+		indexData, GL_STATIC_DRAW);
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE,
+		sizeof(VertexM), 0);
+	glEnableVertexAttribArray(1);
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE,
+		sizeof(VertexM), ((char*)0) + 48);
+	glEnableVertexAttribArray(2);
+	glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE,
+		sizeof(VertexM), ((char*)0) + 16);
+	glEnableVertexAttribArray(3);
+	glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE,
+		sizeof(VertexM), ((char*)0) + 32);
+	glBindVertexArray(0);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
