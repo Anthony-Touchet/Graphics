@@ -222,7 +222,8 @@ void Texturing::createOpenGLBuffers(FBXFile * fbx)
 	{
 		FBXMeshNode* mesh = fbx->getMeshByIndex(i);
 		// storage for the opengl data in 3 unsigned int
-		unsigned int* glData = new unsigned int[3];		
+		unsigned int* glData = new unsigned int[3];
+		
 		glGenVertexArrays(1, &glData[0]);
 		glBindVertexArray(glData[0]);
 		glGenBuffers(1, &glData[1]);
@@ -245,7 +246,8 @@ void Texturing::createOpenGLBuffers(FBXFile * fbx)
 		glBindVertexArray(0);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-		mesh->m_userData = glData;
+		mesh->m_userData = glData;
+
 	}
 }
 

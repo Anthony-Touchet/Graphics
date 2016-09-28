@@ -1,7 +1,7 @@
 #include "MyApp.h"
 
 int main() {
-	Application* app = new Texturing();
+	Application* app = new RenderingGeometry();
 	if(app->Start() == true) {
 		while (app->Update() == true)
 			app->Draw();
@@ -11,4 +11,3 @@ int main() {
 	delete app;
 	return 0;
 }
-
