@@ -5,7 +5,6 @@
 #include <string>
 #define GLM_SWIZZLE
 #define GLM_FORCE_PURE
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <Gizmos.h>
@@ -16,6 +15,7 @@
 
 #include <FBX\Header\FBXFile.h>
 
+using glm::vec2;
 using glm::vec3;
 using glm::vec4;
 using glm::mat4;
@@ -64,6 +64,7 @@ struct Vertex
 {
 	vec4 position;
 	vec4 color;
+	vec2 uv;
 };
 
 struct VertexM {
@@ -71,6 +72,11 @@ struct VertexM {
 	float nx, ny, nz, nw;
 	float tx, ty, tz, tw;
 	float s, t;
+};
+
+struct PGVertex {
+	vec4 position;
+	vec2 uv;
 };
 
 class RenderingGeometry : public Application {
@@ -160,4 +166,34 @@ private:
 	unsigned int m_vao;
 	unsigned int m_vbo;
 	unsigned int m_ibo;
+};
+
+class ProceduralGeneration : public Application {
+
+public:
+	ProceduralGeneration();
+	bool Start() override;
+	bool Update() override;
+	void Draw() override;
+	void Shutdown() override;
+	std::string GetShader(std::string text);
+	void MakePlane(const int size);
+	float* MakePerlinNoise();
+
+private:
+	GLFWwindow* window;
+	FlyCamera cam;
+
+	float previous = 0;
+	float current;
+	float delta;
+
+	unsigned int m_program;
+
+	unsigned int perlin_texture, rock_texture;
+
+	int planeindexCount;
+	unsigned int planeVAO;
+	unsigned int planeVBO;
+	unsigned int planeIBO;
 };

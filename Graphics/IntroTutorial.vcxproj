@@ -139,6 +139,7 @@
     <ClCompile Include="..\dep\gl_core_4_4.c" />
     <ClCompile Include="scr\Camera.cpp" />
     <ClCompile Include="scr\main.cpp" />
+    <ClCompile Include="scr\ProceduralGeneration.cpp" />
     <ClCompile Include="scr\Texturing.cpp" />
     <ClCompile Include="scr\RenderingGeo.cpp" />
     <ClCompile Include="scr\SolarSystem.cpp" />
@@ -147,6 +148,8 @@
     <None Include="frag.glsl" />
     <None Include="fsAdvText.glsl" />
     <None Include="fsTexturing.glsl" />
+    <None Include="PGfs.glsl" />
+    <None Include="PGvs.glsl" />
     <None Include="shader.glsl" />
     <None Include="vsAdvText.glsl" />
     <None Include="vsTexturing.glsl" />

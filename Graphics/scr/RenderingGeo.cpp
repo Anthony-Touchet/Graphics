@@ -357,6 +357,7 @@ unsigned int * RenderingGeometry::GenSphereIndicies(const unsigned int &verts, c
 	for (int i = 0; i < indicesSTD.size(); i++) {
 		index[i] = indicesSTD[i];
 	}
+
 	return index;
 }
 
