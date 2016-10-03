@@ -111,10 +111,10 @@ void ProceduralGeneration::MakePlane(const int size)
 
 float* ProceduralGeneration::MakePerlinNoise()
 {
-	int dims = 64;	//Dimitions
-	float *perlin_data = new float[dims * dims];
+	int dims = 64;									//Dimitions
+	float *perlin_data = new float[dims * dims];	//Data for the Perlin Noise Function
 	float scale = (1.0f / dims) * 3;
-	int octaves = 6;
+	int octaves = 6;								//How many passes of extra perlin noise will we do per vertex.
 
 	for (int x = 0; x < 64; ++x)
 	{
