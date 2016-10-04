@@ -137,6 +137,7 @@
   <ItemGroup>
     <ClCompile Include="..\dep\Gizmos.cpp" />
     <ClCompile Include="..\dep\gl_core_4_4.c" />
+    <ClCompile Include="CameraApp.cpp" />
     <ClCompile Include="scr\Camera.cpp" />
     <ClCompile Include="scr\main.cpp" />
     <ClCompile Include="scr\ProceduralGeneration.cpp" />

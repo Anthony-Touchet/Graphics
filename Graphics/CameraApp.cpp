@@ -1,10 +1,10 @@
 #include "MyApp.h"
 
-SolarSystem::SolarSystem()
+CameraApp::CameraApp()
 {
 }
 
-bool SolarSystem::Start()
+bool CameraApp::Start()
 {
 	white = vec4(1, 0, 0, 1);
 	black = vec4(0, 0, 0, 1);
@@ -28,9 +28,13 @@ bool SolarSystem::Start()
 		return false;
 	}
 
-	view = glm::lookAt(vec3(10, 10, 10), vec3(0), vec3(0, 1, 0));
-	
-	projection = glm::perspective(glm::pi<float>() * 0.25f, 16 / 9.f, 0.1f, 1000.f);	//glm::ortho(-17.7, 17.7, -10.0, 10.0, 0.1, 50.0);
+	cam.setLookAt(vec3(10, 10, 10), vec3(0), vec3(0, 1, 0));
+	//view = glm::lookAt(vec3(10, 10, 10), vec3(0), vec3(0, 1, 0));
+
+	cam.setPerspective(glm::pi<float>() * 0.25f, 16 / 9.f, 0.1f, 1000.f);
+	//projection = glm::perspective(glm::pi<float>() * 0.25f, 16 / 9.f, 0.1f, 1000.f);	glm::ortho(-17.7, 17.7, -10.0, 10.0, 0.1, 50.0);
+
+	cam.setSpeed(10);
 
 	glEnable(GL_DEPTH_TEST);	//Enables the Depth Buffer
 
@@ -39,7 +43,7 @@ bool SolarSystem::Start()
 	return true;
 }
 
-bool SolarSystem::Update()
+bool CameraApp::Update()
 {
 	//Calculate delta time
 	current = (float)glfwGetTime();
@@ -58,7 +62,7 @@ bool SolarSystem::Update()
 
 		mat4 newEarthPos = glm::translate(EarthOffsetFromSun);														//Transform Matrix, Earth to Sun
 		Earth = Sun * newEarthPos * glm::rotate(angle, glm::vec3(0, 1, 0)/* Rotating is part of how it moves */);	//Sun = Origin, newEarth * glm::rotate = How are you transforming it.
-		
+
 		mat4 newMoon = glm::translate(MoonOffsetFromEarth);							//Translation Matrix of the Moon
 		Moon = Earth * newMoon * glm::rotate(angle, glm::vec3(0, 1, 0));			//Apply the translation
 
@@ -67,7 +71,7 @@ bool SolarSystem::Update()
 	return false;
 }
 
-void SolarSystem::Draw()
+void CameraApp::Draw()
 {
 
 	Gizmos::addTransform(glm::mat4(1));
@@ -87,14 +91,14 @@ void SolarSystem::Draw()
 	Gizmos::addSphere(vec3(Earth[3]), 1, 20, 20, vec4(0, .5, 0, 1), &Earth);	//Earth
 	Gizmos::addSphere(vec3(Moon[3]), .5, 20, 20, white, &Moon);					//Moon
 
-	/*cam.update(delta, window);*/
-	Gizmos::draw(projection * view);
+	cam.update(delta, window);
+	Gizmos::draw(cam.getProjectionView());
 
 	glfwSwapBuffers(window);
 	glfwPollEvents();
 }
 
-void SolarSystem::Shutdown()
+void CameraApp::Shutdown()
 {
 	Gizmos::destroy();
 

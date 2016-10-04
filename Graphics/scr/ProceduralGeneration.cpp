@@ -132,7 +132,9 @@ float* ProceduralGeneration::MakePerlinNoise()
 				amplitude *= persistence;
 			}
 		}
-	}	return perlin_data;
+	}
+
+	return perlin_data;
 }
 
 bool ProceduralGeneration::Start()

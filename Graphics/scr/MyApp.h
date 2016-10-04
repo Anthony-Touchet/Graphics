@@ -20,6 +20,25 @@ using glm::vec3;
 using glm::vec4;
 using glm::mat4;
 
+struct Vertex
+{
+	vec4 position;
+	vec4 color;
+	vec2 uv;
+};
+
+struct VertexM {
+	float x, y, z, w;
+	float nx, ny, nz, nw;
+	float tx, ty, tz, tw;
+	float s, t;
+};
+
+struct PGVertex {
+	vec4 position;
+	vec2 uv;
+};
+
 class Application{
 public:
 	virtual bool Update() = 0;
@@ -32,6 +51,39 @@ class SolarSystem : public Application {
 
 public:
 	SolarSystem();
+	bool Start() override;
+	bool Update() override;
+	void Draw() override;
+	void Shutdown() override;
+
+private:
+	GLFWwindow* window;
+
+	vec4 white;
+	vec4 black;
+	vec4 yellow;
+
+	mat4 Sun = mat4(1);		//Sun Matrix
+	mat4 Earth = mat4(1);	//Earth Matrix
+	mat4 Moon = mat4(1);	//Moon Matrix
+
+	vec3 EarthOffsetFromSun = vec3(6, 0, 0);			//Earth relative to Sun
+
+	vec3 MoonOffsetFromEarth = vec3(2, 0, 0);			//Moon Relative to Earth
+
+	float previous = 0;
+	float current;
+	float delta;
+
+	float angle = 0;
+
+	mat4 view;
+	mat4 projection;
+};
+
+class CameraApp : public Application {
+public:
+	CameraApp();
 	bool Start() override;
 	bool Update() override;
 	void Draw() override;
@@ -58,25 +110,9 @@ private:
 	float delta;
 
 	float angle = 0;
-};
 
-struct Vertex
-{
-	vec4 position;
-	vec4 color;
-	vec2 uv;
-};
-
-struct VertexM {
-	float x, y, z, w;
-	float nx, ny, nz, nw;
-	float tx, ty, tz, tw;
-	float s, t;
-};
-
-struct PGVertex {
-	vec4 position;
-	vec2 uv;
+	mat4 view;
+	mat4 projection;
 };
 
 class RenderingGeometry : public Application {
